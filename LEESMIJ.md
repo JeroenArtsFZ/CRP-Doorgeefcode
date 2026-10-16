@@ -1,4 +1,4 @@
-# CRP code scanner, offline app (PWA) – versie 1.1
+# CRP code scanner, offline app (PWA) – versie 1.1.1
 
 Deze map is een complete webapp. Hij wordt één keer via een https-adres op de telefoon geïnstalleerd. Daarna werkt hij zonder internet.
 
@@ -46,7 +46,7 @@ Open de app daarna één keer vanaf het beginscherm. Vanaf dat moment werkt hij 
 2. Verhoog in `sw.js` het versienummer, bijvoorbeeld `crp-doorgeefcode-v1` naar `crp-doorgeefcode-v2`.
 3. Zet de bestanden opnieuw online.
 
-Telefoons halen de nieuwe versie op zodra ze de app weer met internet openen. Na een tweede keer openen is de nieuwe versie actief.
+Vanaf versie 1.1.1 haalt de app bij elke start met internet de nieuwste versie op en ververst hij zichzelf. Dat gebeurt nooit terwijl er een code op het scherm staat of de camera aan is. GitHub Pages heeft na het uploaden een paar minuten nodig voordat de nieuwe versie overal zichtbaar is.
 
 ## Goed om te weten
 
@@ -63,3 +63,7 @@ Telefoons halen de nieuwe versie op zodra ze de app weer met internet openen. Na
 3. Klik op **Commit changes**. Na een paar minuten staat de nieuwe versie online.
 4. Open de app op de telefoon met internet, sluit hem en open hem opnieuw. Onderaan staat dan "Versie 1.1".
 5. De naam onder het icoon ("CRP scanner") en het nieuwe icoon verschijnen op een iPhone pas als je de app verwijdert en opnieuw op het beginscherm zet.
+
+## Eenmalig: van 1.0 of 1.1 naar 1.1.1
+
+Oudere versies hielden de bewaarde app vast. Na het uploaden van 1.1.1: sluit de app helemaal (veeg hem weg uit het overzicht van geopende apps) en open hem opnieuw met internet, eventueel twee keer. Staat er daarna nog steeds een oude versie, verwijder de app dan van het beginscherm en zet hem opnieuw neer.

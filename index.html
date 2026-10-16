@@ -150,7 +150,7 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     </ol>
   </details>
 
-  <p class="version">Versie 1.1 · werkt offline</p>
+  <p class="version">Versie 1.1.1 · werkt offline</p>
 </main>
 
 <div id="scanner" hidden role="dialog" aria-modal="true" aria-label="Barcode scannen">
@@ -346,7 +346,23 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
 })();
 </script>
 <script>
-if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+if("serviceWorker" in navigator){
+  // Is er al een oudere versie actief, dan herlaadt de app zichzelf één keer zodra de nieuwe versie klaarstaat.
+  var hadController=!!navigator.serviceWorker.controller, reloaded=false;
+  navigator.serviceWorker.addEventListener("controllerchange",function(){
+    if(!hadController||reloaded) return;
+    var busy=!document.getElementById("result").hidden||!document.getElementById("scanner").hidden;
+    if(busy) return;                 // nooit herladen terwijl er een code op het scherm staat of de camera aan is
+    reloaded=true; location.reload();
+  });
+  window.addEventListener("load",function(){
+    navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).then(function(reg){
+      document.addEventListener("visibilitychange",function(){
+        if(document.visibilityState==="visible") reg.update().catch(function(){});   // ook bij terugkeren naar de app op updates controleren
+      });
+    }).catch(function(){});
+  });
+}
 </script>
 </body>
 </html>
