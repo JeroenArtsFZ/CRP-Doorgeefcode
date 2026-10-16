@@ -1,0 +1,54 @@
+# CRP Doorgeefcode, offline app (PWA)
+
+Deze map is een complete webapp. Hij wordt één keer via een https-adres op de telefoon geïnstalleerd. Daarna werkt hij zonder internet.
+
+Alles gebeurt op de telefoon zelf: foto maken, barcode lezen en barcode tonen. Er gaan geen gegevens naar de server waar de bestanden staan, en er wordt niets op de telefoon opgeslagen behalve de app zelf.
+
+## Inhoud
+
+| Bestand | Functie |
+|---|---|
+| `index.html` | De app |
+| `manifest.webmanifest` | Naam, icoon en weergave als app |
+| `sw.js` | Zorgt dat de app offline werkt |
+| `lib/` | Scanbibliotheken (JsBarcode, ZXing), lokaal meegeleverd |
+| `icons/` | App-iconen |
+
+## Stap 1: de map online zetten (eenmalig)
+
+Kies één van deze opties en overleg met ICT welke past binnen jullie beleid. Het adres moet met **https** beginnen.
+
+**A. Intranet of interne webserver (voorkeur)**
+Zet de inhoud van de map in een eigen map op de webserver, bijvoorbeeld `https://intranet.fonkelzorg.nl/crp/`. Je hoeft niets in te stellen.
+
+**B. GitHub Pages (gratis)**
+1. Maak een account op github.com en een nieuwe repository, bijvoorbeeld `crp-doorgeefcode`.
+2. Kies *Add file → Upload files* en sleep de **inhoud** van deze map erin (dus `index.html` moet bovenin staan).
+3. Ga naar *Settings → Pages*, kies bij *Branch* `main` en klik op *Save*.
+4. Na een minuut staat de app op `https://<gebruikersnaam>.github.io/crp-doorgeefcode/`.
+
+**C. Netlify (gratis)**
+Maak een account op netlify.com, kies *Add new site → Deploy manually* en sleep deze map in het venster. Je krijgt dan meteen een https-adres.
+
+## Stap 2: installeren op de telefoon
+
+Open het adres één keer met internet.
+
+- **iPhone:** open het in **Safari**, tik op de deelknop en kies **Zet op beginscherm**.
+- **Android:** open het in **Chrome**, tik op het menu met de drie puntjes en kies **App installeren** of **Toevoegen aan startscherm**.
+
+Open de app daarna één keer vanaf het beginscherm. Vanaf dat moment werkt hij ook in vliegtuigmodus.
+
+## Een nieuwe versie uitbrengen
+
+1. Pas de bestanden aan.
+2. Verhoog in `sw.js` het versienummer, bijvoorbeeld `crp-doorgeefcode-v1` naar `crp-doorgeefcode-v2`.
+3. Zet de bestanden opnieuw online.
+
+Telefoons halen de nieuwe versie op zodra ze de app weer met internet openen. Na een tweede keer openen is de nieuwe versie actief.
+
+## Goed om te weten
+
+- De code wordt na 10 minuten automatisch gewist. Dat stel je in bij `EXPIRE_MIN` in `index.html`.
+- Leg het gebruik vast in het kwaliteitssysteem van het lab, net als bij andere werkwijzen rond monsteridentificatie.
+- De bibliotheken JsBarcode en ZXing vallen onder open-sourcelicenties (MIT); de licentieteksten staan in `lib/`.

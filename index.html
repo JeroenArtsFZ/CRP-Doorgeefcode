@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CRP Doorgeefcode</title>
+<meta name="theme-color" content="#0b6e79">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CRP Code">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<style>
+/* Layout: single-column phone tool; one big action, then a full-width barcode panel that stays readable for a handheld scanner */
+:root{
+  --bg:#eef3f4; --surface:#ffffff; --fg:#14262b; --muted:#566c72; --line:#cbd8db;
+  --accent:#0b6e79; --accent-fg:#ffffff; --warn:#a14b00; --warn-bg:#fff1e3; --ok:#1d7a3e;
+  --font-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-mono:ui-monospace,Menlo,Consolas,"Roboto Mono",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1a1d; --surface:#172529; --fg:#e4eef0; --muted:#97adb2; --line:#2b3f44;
+  --accent:#4fb9c4; --accent-fg:#06242a; --warn:#ffb574; --warn-bg:#3a2510; --ok:#6fd492; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1a1d; --surface:#172529; --fg:#e4eef0; --muted:#97adb2; --line:#2b3f44;
+  --accent:#4fb9c4; --accent-fg:#06242a; --warn:#ffb574; --warn-bg:#3a2510; --ok:#6fd492; color-scheme:dark}
+html,body{min-height:100%}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 32px}
+main{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header h1{font-size:1.5rem;margin:0;text-wrap:balance}
+header p{margin:4px 0 0;color:var(--muted)}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:64px;border:0;border-radius:14px;
+  background:var(--accent);color:var(--accent-fg);font:700 1.15rem var(--font-body);cursor:pointer}
+.btn.secondary{background:transparent;color:var(--accent);border:2px solid var(--accent);min-height:52px;font-size:1rem}
+.btn:focus-visible,input:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+.btn svg{width:26px;height:26px}
+.status{min-height:1.5em;color:var(--muted)}
+.status.err{color:var(--warn);background:var(--warn-bg);padding:10px 12px;border-radius:10px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.code-box{background:#ffffff;border-radius:10px;padding:18px 10px;display:flex;justify-content:center}
+.code-box svg{width:100%;height:auto;max-height:42vh}
+.code-text{font:700 1.5rem var(--font-mono);letter-spacing:.06em;text-align:center;word-break:break-all;font-variant-numeric:tabular-nums}
+.meta{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+.meta strong{color:var(--ok)}
+.empty{text-align:center;color:var(--muted);padding:28px 8px;border:2px dashed var(--line);border-radius:16px}
+.empty b{display:block;color:var(--fg);font-size:1.05rem;margin-bottom:4px}
+details{color:var(--muted);font-size:.95rem}
+summary{cursor:pointer;color:var(--fg);font-weight:700}
+details ol{padding-left:1.2em;margin:8px 0 0}
+.manual{display:flex;gap:8px}
+.manual input{flex:1;min-width:0;font:500 1.05rem var(--font-mono);padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.manual button{min-height:auto;width:auto;padding:0 16px;font-size:1rem}
+.version{text-align:center;font-size:.8rem;color:var(--muted);margin:0}
+.label{font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}
+@media (prefers-reduced-motion:no-preference){.panel{animation:in .2s ease-out}@keyframes in{from{transform:translateY(6px)}to{transform:none}}}
+</style>
+
+</head>
+<body>
+<main>
+  <header>
+    <h1>CRP Doorgeefcode</h1>
+    <p>Fotografeer de ZorgDomein-barcode op het scherm. De telefoon toont hem daarna groot, zodat de scanner bij het CRP-apparaat hem kan lezen.</p>
+  </header>
+
+  <label class="btn" for="photo" id="photoLabel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+    Foto van barcode maken
+  </label>
+  <input type="file" id="photo" accept="image/*" capture="environment" hidden>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <section id="result" hidden>
+    <div class="panel">
+      <div class="label">Houd dit scherm onder de scanner</div>
+      <div class="code-box"><svg id="barcode" role="img" aria-label="Barcode"></svg></div>
+      <div class="code-text" id="codeText"></div>
+      <div class="meta"><span>Gelezen om <strong id="time"></strong></span><span id="expires"></span></div>
+      <button class="btn secondary" id="clearBtn" type="button">Klaar, code wissen</button>
+    </div>
+  </section>
+
+  <div class="empty" id="empty">
+    <b>Nog geen code</b>
+    Tik op de knop hierboven en maak een scherpe foto van de barcode. Er wordt niets opgeslagen of verstuurd.
+  </div>
+
+  <details>
+    <summary>Lukt de foto niet? Code met de hand invoeren</summary>
+    <form class="manual" id="manualForm">
+      <input id="manualInput" inputmode="text" autocomplete="off" placeholder="Verwijscode" aria-label="Verwijscode">
+      <button class="btn" type="submit">Toon</button>
+    </form>
+  </details>
+
+  <details>
+    <summary>Tips voor een goede scan</summary>
+    <ol>
+      <li>Zoom de ZorgDomein-pagina in (Ctrl +) zodat de barcode breed in beeld staat.</li>
+      <li>Houd de telefoon recht voor het scherm, iets schuin tegen weerspiegeling.</li>
+      <li>Zet de telefoonhelderheid hoog voordat je onder de scanner gaat.</li>
+      <li>Controleer altijd of de getoonde code overeenkomt met de patiënt.</li>
+    </ol>
+  </details>
+  <p class="version">Versie 1.0 · werkt offline</p>
+</main>
+
+<script src="lib/JsBarcode.all.min.js"></script>
+<script src="lib/zxing.min.js"></script>
+<script>
+(function(){
+  var EXPIRE_MIN = 10;               // code verdwijnt automatisch, tegen verwisseling met de volgende patiënt
+  var $ = function(id){return document.getElementById(id)};
+  var statusEl=$("status"), timer=null, wakeLock=null;
+
+  function setStatus(msg, err){statusEl.textContent=msg||"";statusEl.className="status"+(err?" err":"")}
+
+  function show(code){
+    code=String(code).trim();
+    try{
+      JsBarcode("#barcode", code, {format:"CODE128", displayValue:false, margin:12, width:3, height:120, background:"#ffffff", lineColor:"#000000"});
+    }catch(e){setStatus("Deze code kan niet als Code 128 worden getoond. Controleer de invoer.",true);return}
+    $("codeText").textContent=code;
+    var now=new Date();
+    $("time").textContent=now.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"});
+    $("expires").textContent="Wordt over "+EXPIRE_MIN+" min gewist";
+    $("result").hidden=false;$("empty").hidden=true;setStatus("");
+    clearTimeout(timer);timer=setTimeout(clearCode,EXPIRE_MIN*60000);
+    try{ if(navigator.wakeLock){navigator.wakeLock.request("screen").then(function(l){wakeLock=l}).catch(function(){})} }catch(e){}
+    $("result").scrollIntoView({behavior:"smooth",block:"start"});
+  }
+
+  function clearCode(){
+    clearTimeout(timer);
+    $("barcode").innerHTML="";$("codeText").textContent="";
+    $("result").hidden=true;$("empty").hidden=false;
+    if(wakeLock){try{wakeLock.release()}catch(e){}wakeLock=null}
+    setStatus("Code gewist.");
+  }
+
+  function loadImage(file){
+    return new Promise(function(res,rej){
+      var url=URL.createObjectURL(file), img=new Image();
+      img.onload=function(){res(img)}; img.onerror=function(){URL.revokeObjectURL(url);rej(new Error("img"))};
+      img.src=url;
+    });
+  }
+
+  function canvasFor(img, maxW, rotate){
+    var s=Math.min(1, maxW/Math.max(img.naturalWidth,img.naturalHeight));
+    var w=Math.round(img.naturalWidth*s), h=Math.round(img.naturalHeight*s);
+    var c=document.createElement("canvas"), ctx=c.getContext("2d");
+    if(rotate){c.width=h;c.height=w;ctx.translate(h,0);ctx.rotate(Math.PI/2)}else{c.width=w;c.height=h}
+    ctx.drawImage(img,0,0,w,h);
+    return c;
+  }
+
+  function zxingDecode(canvas){
+    var hints=new Map();
+    hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[ZXing.BarcodeFormat.CODE_128]);
+    hints.set(ZXing.DecodeHintType.TRY_HARDER,true);
+    var reader=new ZXing.MultiFormatReader(); reader.setHints(hints);
+    var bin=new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(new ZXing.HTMLCanvasElementLuminanceSource(canvas)));
+    return reader.decode(bin).getText();
+  }
+
+  async function decode(img){
+    if("BarcodeDetector" in window){
+      try{
+        var det=new BarcodeDetector({formats:["code_128"]});
+        var found=await det.detect(img);
+        if(found&&found.length) return found[0].rawValue;
+      }catch(e){}
+    }
+    if(!window.ZXing) throw new Error("lib");
+    var tries=[[1600,false],[1100,false],[2400,false],[1600,true],[800,false]];
+    for(var i=0;i<tries.length;i++){
+      try{ return zxingDecode(canvasFor(img,tries[i][0],tries[i][1])) }catch(e){}
+    }
+    throw new Error("none");
+  }
+
+  $("photo").addEventListener("change", async function(ev){
+    var f=ev.target.files&&ev.target.files[0]; ev.target.value="";
+    if(!f) return;
+    setStatus("Barcode lezen…");
+    try{
+      var img=await loadImage(f);
+      var code=await decode(img);
+      URL.revokeObjectURL(img.src);
+      show(code);
+    }catch(e){
+      setStatus(e.message==="lib"
+        ? "De scanbibliotheek is niet geladen. Herlaad de app."
+        : "Geen barcode gevonden. Zoom de pagina op de computer verder in en maak de foto recht van voren.", true);
+    }
+  });
+
+  $("manualForm").addEventListener("submit",function(e){
+    e.preventDefault(); var v=$("manualInput").value.trim();
+    if(!v){setStatus("Vul eerst een code in.",true);return}
+    show(v); $("manualInput").value="";
+  });
+  $("clearBtn").addEventListener("click",clearCode);
+  document.addEventListener("visibilitychange",function(){
+    if(document.visibilityState==="visible" && !$("result").hidden && navigator.wakeLock){
+      navigator.wakeLock.request("screen").then(function(l){wakeLock=l}).catch(function(){});
+    }
+  });
+})();
+</script>
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+</script>
+</body>
+</html>

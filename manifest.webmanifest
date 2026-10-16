@@ -1,0 +1,17 @@
+{
+  "name": "CRP Doorgeefcode",
+  "short_name": "CRP Code",
+  "description": "Fotografeer de ZorgDomein-barcode en toon hem groot voor de scanner bij het CRP-apparaat.",
+  "lang": "nl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eef3f4",
+  "theme_color": "#0b6e79",
+  "icons": [
+    {"src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+    {"src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
+    {"src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
