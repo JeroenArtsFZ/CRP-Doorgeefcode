@@ -1,8 +1,8 @@
-# CRP Doorgeefcode, offline app (PWA)
+# CRP code scanner, offline app (PWA) – versie 1.1
 
 Deze map is een complete webapp. Hij wordt één keer via een https-adres op de telefoon geïnstalleerd. Daarna werkt hij zonder internet.
 
-Alles gebeurt op de telefoon zelf: foto maken, barcode lezen en barcode tonen. Er gaan geen gegevens naar de server waar de bestanden staan, en er wordt niets op de telefoon opgeslagen behalve de app zelf.
+Alles gebeurt op de telefoon zelf: barcode scannen binnen het gele kader, lezen en groot tonen. Het camerabeeld wordt nergens opgeslagen. Er gaan geen gegevens naar de server waar de bestanden staan, en er wordt niets op de telefoon opgeslagen behalve de app zelf.
 
 ## Inhoud
 
@@ -12,6 +12,7 @@ Alles gebeurt op de telefoon zelf: foto maken, barcode lezen en barcode tonen. E
 | `manifest.webmanifest` | Naam, icoon en weergave als app |
 | `sw.js` | Zorgt dat de app offline werkt |
 | `lib/` | Scanbibliotheken (JsBarcode, ZXing), lokaal meegeleverd |
+| `fonts/` | Huisstijllettertypen Montserrat en Open Sans |
 | `icons/` | App-iconen |
 
 ## Stap 1: de map online zetten (eenmalig)
@@ -49,6 +50,16 @@ Telefoons halen de nieuwe versie op zodra ze de app weer met internet openen. Na
 
 ## Goed om te weten
 
+- Op een iPhone kan iOS bij elke start van de app opnieuw om cameratoestemming vragen. Dat is een beperking van Apple.
+- Start de camera niet, dan biedt de app een gewone foto aan als reserve.
 - De code wordt na 10 minuten automatisch gewist. Dat stel je in bij `EXPIRE_MIN` in `index.html`.
 - Leg het gebruik vast in het kwaliteitssysteem van het lab, net als bij andere werkwijzen rond monsteridentificatie.
-- De bibliotheken JsBarcode en ZXing vallen onder open-sourcelicenties (MIT); de licentieteksten staan in `lib/`.
+- De bibliotheken JsBarcode en ZXing vallen onder open-sourcelicenties (MIT), de lettertypen onder de SIL Open Font License. De licentieteksten staan in `lib/` en `fonts/`.
+
+## Bijwerken van 1.0 naar 1.1 op GitHub
+
+1. Pak de zip uit.
+2. Kies in de repository **Add file → Upload files** en sleep opnieuw de hele inhoud van de map erin. Bestaande bestanden worden overschreven en de nieuwe map `fonts` wordt toegevoegd.
+3. Klik op **Commit changes**. Na een paar minuten staat de nieuwe versie online.
+4. Open de app op de telefoon met internet, sluit hem en open hem opnieuw. Onderaan staat dan "Versie 1.1".
+5. De naam onder het icoon ("CRP scanner") en het nieuwe icoon verschijnen op een iPhone pas als je de app verwijdert en opnieuw op het beginscherm zet.
