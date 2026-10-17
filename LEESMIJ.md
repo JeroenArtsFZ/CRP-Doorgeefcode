@@ -9,9 +9,10 @@ Alles gebeurt op de telefoon zelf: barcode scannen binnen het gele kader, lezen 
 | Bestand | Functie |
 |---|---|
 | `index.html` | De app |
+| `installeren.html` | Landingspagina met uitleg en installatieknop. Deel deze link met collega's |
 | `manifest.webmanifest` | Naam, icoon en weergave als app |
 | `sw.js` | Zorgt dat de app offline werkt |
-| `lib/` | Scanbibliotheken (JsBarcode, ZXing), lokaal meegeleverd |
+| `lib/` | Scanbibliotheken (JsBarcode, ZXing) en QR-generator, lokaal meegeleverd |
 | `fonts/` | Huisstijllettertypen Montserrat en Open Sans |
 | `icons/` | App-iconen |
 
@@ -54,7 +55,7 @@ Vanaf versie 1.1.1 haalt de app bij elke start met internet de nieuwste versie o
 - Start de camera niet, dan biedt de app een gewone foto aan als reserve.
 - De code wordt na 10 minuten automatisch gewist. Dat stel je in bij `EXPIRE_MIN` in `index.html`.
 - Leg het gebruik vast in het kwaliteitssysteem van het lab, net als bij andere werkwijzen rond monsteridentificatie.
-- De bibliotheken JsBarcode en ZXing vallen onder open-sourcelicenties (MIT), de lettertypen onder de SIL Open Font License. De licentieteksten staan in `lib/` en `fonts/`.
+- De bibliotheken JsBarcode, ZXing en de QR-generator vallen onder open-sourcelicenties (MIT), de lettertypen onder de SIL Open Font License. De licentieteksten staan in `lib/` en `fonts/`.
 
 ## Bijwerken van 1.0 naar 1.1 op GitHub
 
@@ -67,3 +68,11 @@ Vanaf versie 1.1.1 haalt de app bij elke start met internet de nieuwste versie o
 ## Eenmalig: van 1.0 of 1.1 naar 1.1.1
 
 Oudere versies hielden de bewaarde app vast. Na het uploaden van 1.1.1: sluit de app helemaal (veeg hem weg uit het overzicht van geopende apps) en open hem opnieuw met internet, eventueel twee keer. Staat er daarna nog steeds een oude versie, verwijder de app dan van het beginscherm en zet hem opnieuw neer.
+
+## Landingspagina
+
+Deel met collega's het adres van `installeren.html`, bijvoorbeeld `https://jeroenartsfz.github.io/CRP-Doorgeefcode/installeren.html`. De pagina legt uit wat de app doet en heeft een installatieknop:
+
+- **Android (Chrome, Edge, Samsung Internet):** de knop opent direct het installatievenster van de browser.
+- **iPhone:** Apple staat geen installatieknop toe. De knop toont daarom de drie stappen via het deelmenu.
+- **Computer:** de pagina toont een QR-code waarmee je hem op je telefoon opent.

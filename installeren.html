@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CRP code scanner installeren</title>
+<meta name="description" content="Scan de ZorgDomein-barcode met je telefoon en houd hem onder de scanner van het CRP-apparaat. Installeer de app in één tik.">
+<meta name="theme-color" content="#2b7175">
+<meta name="color-scheme" content="light">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="CRP scanner">
+<style>
+@font-face{font-family:"Montserrat";font-weight:700;font-display:swap;src:url(fonts/montserrat-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Open Sans";font-weight:400;font-display:swap;src:url(fonts/open-sans-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Open Sans";font-weight:700;font-display:swap;src:url(fonts/open-sans-latin-700-normal.woff2) format("woff2")}
+
+/* Layout: one-column landing page; hero with install action and a phone preview side by side on wide screens, then steps, privacy and per-device install help */
+:root{
+  color-scheme:light;
+  --bg:#f4f7f7; --surface:#ffffff; --fg:#1f2b33; --muted:#4f5f69; --line:#d5e0e1;
+  --teal:#2b7175; --teal-dark:#1f5558; --teal-light:#7ebec5; --teal-wash:#e6f0f0; --yellow:#e4c800;
+  --font-head:"Montserrat",Helvetica,Arial,sans-serif;
+  --font-body:"Open Sans",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg);padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.6}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--font-head);font-weight:700;line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.9rem,5vw,2.9rem);color:var(--fg)}
+h2{font-size:clamp(1.35rem,3vw,1.75rem);color:var(--teal)}
+h3{font-size:1.05rem}
+p{margin:0}
+a{color:var(--teal)}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+
+/* top bar */
+.top{background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:14px}
+.top svg{width:36px;height:auto;flex:none}
+.top .name{font-family:var(--font-head);font-weight:700;color:var(--teal);font-size:1.1rem}
+.top .org{margin-left:auto;color:var(--muted);font-size:.9rem}
+
+/* hero */
+.hero{background:var(--surface);border-bottom:4px solid var(--yellow)}
+.hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center;padding-block:48px 56px}
+.hero-text{display:flex;flex-direction:column;gap:18px;min-width:0}
+.eyebrow{font-size:.8rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--teal)}
+.lead{font-size:1.15rem;color:var(--muted);max-width:34em}
+.actions{display:flex;flex-direction:column;gap:12px;align-items:flex-start;margin-top:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:58px;padding:0 28px;border:0;border-radius:12px;
+  background:var(--teal);color:#fff;font:700 1.1rem var(--font-body);cursor:pointer;text-decoration:none}
+.btn:hover{background:var(--teal-dark)}
+.btn svg{width:22px;height:22px}
+.btn.ghost{align-self:flex-start;background:transparent;color:var(--teal);border:2px solid var(--teal);min-height:50px;font-size:1rem}
+.btn.ghost:hover{background:var(--teal-wash)}
+.hint{font-size:.92rem;color:var(--muted)}
+.ok{display:flex;gap:10px;align-items:center;background:var(--teal-wash);color:var(--teal-dark);padding:12px 16px;border-radius:12px;font-weight:700}
+
+/* phone preview */
+.phone{justify-self:center;width:250px;max-width:100%;aspect-ratio:9/18;background:var(--fg);border-radius:36px;padding:12px;box-shadow:0 18px 40px rgba(31,43,51,.18)}
+.screen{height:100%;background:var(--bg);border-radius:26px;padding:18px 14px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+.screen .bar{display:flex;align-items:center;gap:8px;font-family:var(--font-head);font-weight:700;color:var(--teal);font-size:.85rem}
+.screen .bar svg{width:20px}
+.screen .card{background:#fff;border-radius:12px;border-top:3px solid var(--yellow);padding:12px 10px;display:flex;flex-direction:column;gap:8px;align-items:center}
+.screen .card small{font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;align-self:flex-start}
+.screen .card svg{width:100%;height:auto}
+.screen .code{font:700 .8rem ui-monospace,Menlo,monospace;letter-spacing:.08em}
+.screen .fake-btn{background:var(--teal);color:#fff;border-radius:10px;text-align:center;font-weight:700;font-size:.78rem;padding:10px}
+.screen .fake-btn.alt{background:#fff;color:var(--teal);border:2px solid var(--teal)}
+.screen .tag{margin-top:auto;text-align:center;font-size:.62rem;color:var(--muted)}
+
+/* sections */
+section.block .wrap{padding-block:56px;display:flex;flex-direction:column;gap:28px}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.steps li{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.num{width:34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;font:700 1rem var(--font-head);display:grid;place-items:center}
+.steps p{color:var(--muted)}
+
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:16px 32px;margin:0;padding:0;list-style:none}
+.facts li{display:flex;gap:14px;align-items:flex-start;min-width:0}
+.facts svg{width:26px;height:26px;flex:none;color:var(--teal);margin-top:2px}
+.facts b{display:block}
+.facts span{color:var(--muted)}
+.alt-bg{background:var(--teal-wash)}
+
+.devices{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.device{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.device.current{border:2px solid var(--teal)}
+.device .pill{align-self:flex-start;background:var(--yellow);color:var(--fg);font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:99px}
+.device ol{margin:0;padding-left:1.2em;color:var(--muted);display:flex;flex-direction:column;gap:6px}
+.device ol b{color:var(--fg)}
+.qr{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;align-self:flex-start}
+.qr svg{display:block;width:150px;height:150px}
+.ico{display:inline-block;vertical-align:-4px;width:20px;height:20px;color:var(--teal)}
+
+footer{border-top:1px solid var(--line);background:var(--surface)}
+footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between;color:var(--muted);font-size:.9rem}
+
+/* install help sheet */
+#sheet{position:fixed;inset:0;z-index:30;background:rgba(31,43,51,.5);display:flex;align-items:flex-end;justify-content:center}
+.sheet-card{background:var(--surface);width:100%;max-width:520px;border-radius:20px 20px 0 0;border-top:4px solid var(--yellow);
+  padding:24px max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px));
+  display:flex;flex-direction:column;gap:16px}
+.sheet-card ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:12px}
+.sheet-card .note{font-size:.92rem;color:var(--muted);background:var(--bg);border-radius:10px;padding:10px 12px}
+@media (prefers-reduced-motion:no-preference){.sheet-card{animation:up .22s ease-out}@keyframes up{from{transform:translateY(30px)}to{transform:none}}}
+@media (min-width:640px){#sheet{align-items:center}.sheet-card{border-radius:20px}}
+
+@media (max-width:820px){
+  .hero .wrap{grid-template-columns:1fr;gap:36px;padding-block:32px 40px}
+  .steps,.devices{grid-template-columns:1fr}
+  .facts{grid-template-columns:1fr}
+  .top .org{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <svg viewBox="0 0 57.74 50" role="img" aria-label="Fonkelzorg">
+      <path d="M14.4362 49.9999H43.2992L14.4362 33.3333V49.9999Z" fill="#48AA85"/>
+      <path d="M0 24.9978L14.4361 50.0001V16.6667L0 24.9978Z" fill="#A2D0AA"/>
+      <path d="M14.4361 0L0 25.0023L28.8676 8.33564L14.4361 0Z" fill="#F2E559"/>
+      <path d="M43.2992 0V33.3333L57.7353 25.0023L43.2992 0Z" fill="#8DD0E1"/>
+      <path d="M28.8677 41.6642L43.3038 49.9999L57.7353 25.0022L28.8677 41.6642Z" fill="#398C8E"/>
+      <path d="M14.4362 0L43.2992 16.6667V0H14.4362Z" fill="#E4C900"/>
+    </svg>
+    <span class="name">CRP code scanner</span>
+    <span class="org">Fonkelzorg</span>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <span class="eyebrow">Voor het lab</span>
+        <h1>Van ZorgDomein naar het CRP-apparaat, zonder overtypen</h1>
+        <p class="lead">Scan de verwijscode op het computerscherm met je telefoon. De app toont de barcode groot, zodat je hem direct onder de scanner van het CRP-apparaat houdt.</p>
+
+        <div class="actions" id="actions">
+          <button class="btn" type="button" id="installBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>
+            <span id="installLabel">App installeren</span>
+          </button>
+          <p class="hint" id="installHint">Gratis, zonder app store. Werkt daarna ook zonder internet.</p>
+        </div>
+        <div class="ok" id="installedMsg" hidden>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>
+          <span id="installedText">De app staat op je beginscherm.</span>
+        </div>
+        <a class="btn ghost" href="./" id="openLink">App openen in de browser</a>
+      </div>
+
+      <div class="phone" aria-hidden="true">
+        <div class="screen">
+          <div class="bar">
+            <svg viewBox="0 0 57.74 50"><path d="M14.4362 49.9999H43.2992L14.4362 33.3333V49.9999Z" fill="#48AA85"/><path d="M0 24.9978L14.4361 50.0001V16.6667L0 24.9978Z" fill="#A2D0AA"/><path d="M14.4361 0L0 25.0023L28.8676 8.33564L14.4361 0Z" fill="#F2E559"/><path d="M43.2992 0V33.3333L57.7353 25.0023L43.2992 0Z" fill="#8DD0E1"/><path d="M28.8677 41.6642L43.3038 49.9999L57.7353 25.0022L28.8677 41.6642Z" fill="#398C8E"/><path d="M14.4362 0L43.2992 16.6667V0H14.4362Z" fill="#E4C900"/></svg>
+            CRP code scanner
+          </div>
+          <div class="fake-btn">Barcode fotograferen</div>
+          <div class="card">
+            <small>Houd dit scherm onder de scanner</small>
+            <svg id="demoBarcode"></svg>
+            <span class="code">VOORBEELD</span>
+          </div>
+          <div class="fake-btn alt">Klaar, code wissen</div>
+          <div class="tag">Voorbeeldweergave</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="hoe">
+    <div class="wrap">
+      <h2>Zo werkt het</h2>
+      <ol class="steps">
+        <li><span class="num">1</span><h3>Open de verwijzing</h3><p>Open de aanvraag in ZorgDomein op de computer, zodat de barcode op het scherm staat.</p></li>
+        <li><span class="num">2</span><h3>Scan met je telefoon</h3><p>Tik op <b>Barcode fotograferen</b> en houd de barcode in het gele kader. De app herkent hem vanzelf.</p></li>
+        <li><span class="num">3</span><h3>Houd hem onder de scanner</h3><p>Loop naar het CRP-apparaat en houd het telefoonscherm onder de barcodescanner. Controleer of de code bij de patiënt hoort.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block alt-bg">
+    <div class="wrap">
+      <h2>Veilig en eenvoudig</h2>
+      <ul class="facts">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+          <div><b>Niets wordt opgeslagen of verstuurd</b><span>Scannen en tonen gebeuren op de telefoon zelf. Er gaan geen gegevens naar een server.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+          <div><b>Alleen binnen het kader</b><span>De app zoekt uitsluitend binnen het gele kader naar een barcode en leest geen tekst.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          <div><b>Code wist zichzelf</b><span>Na 10 minuten verdwijnt de code automatisch, zodat hij niet bij de volgende patiënt blijft staan.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"/><path d="M3 3l18 18"/></svg>
+          <div><b>Werkt zonder internet</b><span>Na de installatie werkt de app ook in vliegtuigmodus.</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="installeren">
+    <div class="wrap">
+      <h2>Installeren op je toestel</h2>
+      <div class="devices">
+        <div class="device" id="dev-ios">
+          <span class="pill" hidden>Jouw toestel</span>
+          <h3>iPhone</h3>
+          <ol>
+            <li>Open deze pagina in <b>Safari</b>.</li>
+            <li>Tik op de deelknop <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="deelknop"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg> onderin of bovenin.</li>
+            <li>Kies <b>Zet op beginscherm</b> en tik op <b>Voeg toe</b>.</li>
+          </ol>
+        </div>
+        <div class="device" id="dev-android">
+          <span class="pill" hidden>Jouw toestel</span>
+          <h3>Android</h3>
+          <ol>
+            <li>Open deze pagina in <b>Chrome</b>.</li>
+            <li>Tik op <b>App installeren</b> bovenaan deze pagina.</li>
+            <li>Lukt dat niet: tik op het menu <b>⋮</b> en kies <b>App installeren</b> of <b>Toevoegen aan startscherm</b>.</li>
+          </ol>
+        </div>
+        <div class="device" id="dev-desktop">
+          <span class="pill" hidden>Jouw toestel</span>
+          <h3>Op de computer?</h3>
+          <p class="hint">Scan deze QR-code met de camera van je telefoon om deze pagina daar te openen.</p>
+          <div class="qr" id="qr" role="img" aria-label="QR-code naar deze pagina"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>CRP code scanner · versie 1.1.1</span>
+    <span>Fonkelzorg</span>
+  </div>
+</footer>
+
+<div id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet-card">
+    <h2 id="sheetTitle">Zet de app op je beginscherm</h2>
+    <ol id="sheetSteps"></ol>
+    <p class="note" id="sheetNote" hidden></p>
+    <button class="btn" type="button" id="sheetClose">Begrepen</button>
+  </div>
+</div>
+
+<script src="lib/JsBarcode.all.min.js"></script>
+<script src="lib/qrcode.js"></script>
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id)};
+  var ua=navigator.userAgent;
+  var isIOS=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  var isAndroid=/Android/i.test(ua);
+  var isMobile=isIOS||isAndroid;
+  var inAppBrowser=/FBAN|FBAV|Instagram|LinkedInApp|Teams|Outlook|GSA\/|; wv\)/i.test(ua);
+  var iosNonSafari=isIOS&&/CriOS|FxiOS|EdgiOS/.test(ua);
+  var standalone=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
+  var deferred=null;
+
+  var ICON_SHARE='<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="deelknop"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg>';
+
+  /* voorbeeld-barcode en QR-code */
+  try{ JsBarcode("#demoBarcode","VOORBEELD",{format:"CODE128",displayValue:false,margin:0,width:2,height:56,background:"#ffffff"}) }catch(e){}
+  try{
+    var url=location.href.split("#")[0].split("?")[0];
+    var qr=qrcode(0,"M"); qr.addData(url); qr.make();
+    $("qr").innerHTML=qr.createSvgTag({cellSize:4,margin:2,scalable:true});
+  }catch(e){ $("qr").hidden=true }
+
+  /* markeer het toestel van de bezoeker */
+  var mine=isIOS?"dev-ios":isAndroid?"dev-android":"dev-desktop";
+  $(mine).classList.add("current"); $(mine).querySelector(".pill").hidden=false;
+
+  function showInstalled(text){
+    $("actions").hidden=true; $("installedMsg").hidden=false;
+    if(text) $("installedText").textContent=text;
+    $("openLink").textContent="App openen";
+  }
+  if(standalone){ showInstalled("Je gebruikt de app al vanaf je beginscherm.") }
+
+  /* Chrome, Edge en Samsung Internet: echte installatieknop */
+  window.addEventListener("beforeinstallprompt",function(e){
+    e.preventDefault(); deferred=e;
+    $("installHint").textContent="Eén tik, zonder app store. Werkt daarna ook zonder internet.";
+  });
+  window.addEventListener("appinstalled",function(){ deferred=null; showInstalled("Gelukt. De app staat nu op je beginscherm als CRP scanner.") });
+
+  if(!isMobile){
+    $("installHint").textContent="Bedoeld voor je telefoon. Scan hieronder de QR-code om deze pagina op je telefoon te openen.";
+  }
+
+  function openSheet(steps,note){
+    $("sheetSteps").innerHTML=steps.map(function(s){return "<li>"+s+"</li>"}).join("");
+    $("sheetNote").hidden=!note; if(note) $("sheetNote").textContent=note;
+    $("sheet").hidden=false; $("sheetClose").focus();
+  }
+  function closeSheet(){ $("sheet").hidden=true; $("installBtn").focus() }
+
+  $("installBtn").addEventListener("click",async function(){
+    if(deferred){
+      deferred.prompt();
+      try{ var choice=await deferred.userChoice; if(choice&&choice.outcome==="accepted") showInstalled("Gelukt. De app staat nu op je beginscherm als CRP scanner.") }catch(e){}
+      deferred=null; return;
+    }
+    if(inAppBrowser){
+      openSheet([
+        "Deze pagina is geopend in een andere app, bijvoorbeeld je mail. Daar kun je niet installeren.",
+        isIOS?"Tik op het menu en kies <b>Open in Safari</b>.":"Tik op het menu <b>⋮</b> en kies <b>Openen in Chrome</b>.",
+        "Tik daar opnieuw op <b>App installeren</b>."
+      ]); return;
+    }
+    if(isIOS){
+      openSheet([
+        iosNonSafari?"Open deze pagina in <b>Safari</b>. Dat gaat het makkelijkst.":"Tik op de deelknop "+ICON_SHARE+" onderin het scherm (op iPad bovenin).",
+        iosNonSafari?"Tik daar op de deelknop "+ICON_SHARE+".":"Scroll naar beneden en kies <b>Zet op beginscherm</b>.",
+        iosNonSafari?"Kies <b>Zet op beginscherm</b> en tik op <b>Voeg toe</b>.":"Tik rechtsboven op <b>Voeg toe</b>. De app staat nu als <b>CRP scanner</b> op je beginscherm."
+      ],"Apple staat geen installatieknop op websites toe. Daarom gaat het op een iPhone via het deelmenu. Het duurt maar een paar seconden."); return;
+    }
+    if(isAndroid){
+      openSheet([
+        "Tik rechtsboven op het menu <b>⋮</b> van de browser.",
+        "Kies <b>App installeren</b> of <b>Toevoegen aan startscherm</b>.",
+        "Bevestig met <b>Installeren</b>."
+      ],"Staat de app al op je telefoon? Dan biedt de browser installeren niet nog een keer aan. Open hem dan via je startscherm."); return;
+    }
+    openSheet([
+      "Richt de camera van je telefoon op de QR-code onderaan deze pagina.",
+      "Tik op de link die verschijnt.",
+      "Tik op je telefoon op <b>App installeren</b>."
+    ]);
+    $("dev-desktop").scrollIntoView({behavior:"smooth",block:"center"});
+  });
+  $("sheetClose").addEventListener("click",closeSheet);
+  $("sheet").addEventListener("click",function(e){ if(e.target===this) closeSheet() });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&!$("sheet").hidden) closeSheet() });
+
+  /* nodig voor de installatieknop en laadt de app alvast voor offline gebruik */
+  if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js",{updateViaCache:"none"}).catch(function(){}) }
+})();
+</script>
+</body>
+</html>
