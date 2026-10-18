@@ -88,8 +88,27 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
 .scan-top{padding-top:calc(env(safe-area-inset-top,0px) + 18px);font-weight:700;font-size:1.05rem}
 .scan-top small{display:block;font-weight:400;font-size:.9rem;opacity:.85}
 .scan-bottom{margin-top:auto;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 22px);display:flex;flex-direction:column;gap:10px;align-items:center}
-.scan-bottom .btn{max-width:360px;background:#ffffff;color:var(--teal);min-height:54px}
+.scan-row{display:flex;gap:12px;width:100%;max-width:360px;align-items:stretch}
+.scan-row .btn{flex:1;background:#ffffff;color:var(--teal);min-height:54px}
+.torch{flex:none;width:54px;height:54px;border-radius:50%;border:2px solid #ffffff;background:rgba(0,0,0,.35);color:#ffffff;
+  display:grid;place-items:center;cursor:pointer;padding:0}
+.torch svg{width:26px;height:26px}
+.torch[aria-pressed="true"]{background:var(--yellow);border-color:var(--yellow);color:var(--fg)}
 .scan-bottom .linkbtn{color:#fff}
+
+/* result actions */
+.result-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.result-actions .btn{min-height:52px;font-size:1rem}
+
+/* format warning */
+#warn{position:fixed;inset:0;z-index:60;background:rgba(31,43,51,.6);display:flex;align-items:center;justify-content:center;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.warn-card{background:var(--surface);width:100%;max-width:420px;border-radius:16px;border-top:5px solid var(--warn);padding:22px;display:flex;flex-direction:column;gap:12px}
+.warn-card h2{font-family:var(--font-head);font-size:1.25rem;margin:0;color:var(--warn)}
+.warn-card p{margin:0;color:var(--muted)}
+.warn-code{font:700 1.3rem var(--font-mono);letter-spacing:.05em;color:var(--fg);background:var(--bg);border-radius:8px;padding:8px 10px;word-break:break-all;text-align:center}
+.warn-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
+.warn-actions .btn{min-height:52px;font-size:1rem}
 </style>
 </head>
 <body>
@@ -123,7 +142,13 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
       <div class="code-box"><svg id="barcode" role="img" aria-label="Barcode"></svg></div>
       <div class="code-text" id="codeText"></div>
       <div class="meta"><span>Gelezen om <strong id="time"></strong></span><span id="expires"></span></div>
-      <button class="btn secondary" id="clearBtn" type="button">Klaar, code wissen</button>
+      <div class="result-actions">
+        <button class="btn secondary" id="shareBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M7 10H5v11h14V10h-2"/></svg>
+          <span id="shareLabel">Delen</span>
+        </button>
+        <button class="btn secondary" id="clearBtn" type="button">Klaar, wissen</button>
+      </div>
     </div>
   </section>
 
@@ -150,7 +175,7 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     </ol>
   </details>
 
-  <p class="version">Versie 1.1.1 · werkt offline</p>
+  <p class="version">Versie 1.2 · werkt offline</p>
 </main>
 
 <div id="scanner" hidden role="dialog" aria-modal="true" aria-label="Barcode scannen">
@@ -158,8 +183,26 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   <div class="mask"><div id="frame"></div></div>
   <div class="scan-top">Plaats de barcode in het gele kader<small>De code wordt automatisch herkend</small></div>
   <div class="scan-bottom">
-    <button class="btn" type="button" id="cancelScan">Annuleren</button>
+    <div class="scan-row">
+      <button class="torch" type="button" id="torchBtn" aria-pressed="false" aria-label="Lamp aanzetten" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2h8v4l-2 4v11a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V10L8 6z"/><path d="M8 6h8M12 13v2"/></svg>
+      </button>
+      <button class="btn" type="button" id="cancelScan">Annuleren</button>
+    </div>
     <button class="linkbtn" type="button" id="usePhoto">Camera werkt niet? Maak een gewone foto</button>
+  </div>
+</div>
+
+<div id="warn" hidden role="alertdialog" aria-modal="true" aria-labelledby="warnTitle" aria-describedby="warnText">
+  <div class="warn-card">
+    <h2 id="warnTitle">Dit lijkt geen verwijscode</h2>
+    <p id="warnText">Een verwijscode bestaat uit ZD gevolgd door 9 cijfers. Gelezen is:</p>
+    <div class="warn-code" id="warnCode"></div>
+    <p>Controleer of je de juiste barcode hebt gescand.</p>
+    <div class="warn-actions">
+      <button class="btn" type="button" id="warnRetry">Opnieuw</button>
+      <button class="btn secondary" type="button" id="warnUse">Toch gebruiken</button>
+    </div>
   </div>
 </div>
 
@@ -170,14 +213,20 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   var EXPIRE_MIN = 10;          // code verdwijnt automatisch, tegen verwisseling met de volgende patiënt
   var SCAN_INTERVAL = 140;      // ms tussen twee pogingen
   var CONFIRM_READS = 2;        // aantal gelijke lezingen achter elkaar voordat de code wordt geaccepteerd
+  var IGNORE_MS = 4000;         // na "Opnieuw" wordt dezelfde afwijkende code zo lang genegeerd
+  var CODE_FORMAT = /^ZD\d{9}$/; // verwijscode: ZD gevolgd door 9 cijfers
   var $ = function(id){return document.getElementById(id)};
   var statusEl=$("status"), timer=null, wakeLock=null;
-  var stream=null, scanning=false, loopTimer=null, lastRead=null, readCount=0;
+  var stream=null, track=null, scanning=false, paused=false, loopTimer=null, lastRead=null, readCount=0;
+  var ignoredCode=null, ignoreUntil=0, torchOn=false, currentCode="";
   var work=document.createElement("canvas"), wctx=work.getContext("2d",{willReadFrequently:true});
   var detector=null;
   try{ if("BarcodeDetector" in window) detector=new BarcodeDetector({formats:["code_128"]}) }catch(e){ detector=null }
 
+  function store(k,v){ try{ if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v) }catch(e){} }
+  function load(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
   function setStatus(msg, err){statusEl.textContent=msg||"";statusEl.className="status"+(err?" err":"")}
+  function isValid(code){ return CODE_FORMAT.test(code) }
 
   /* ---------- tonen en wissen ---------- */
   function show(code){
@@ -185,16 +234,18 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     try{
       JsBarcode("#barcode", code, {format:"CODE128", displayValue:false, margin:12, width:3, height:120, background:"#ffffff", lineColor:"#000000"});
     }catch(e){setStatus("Deze code kan niet als Code 128 worden getoond. Controleer de invoer.",true);return}
+    currentCode=code;
     $("codeText").textContent=code;
     $("time").textContent=new Date().toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"});
     $("expires").textContent="Wordt over "+EXPIRE_MIN+" min gewist";
+    $("shareLabel").textContent="Delen";
     $("result").hidden=false;$("empty").hidden=true;setStatus("");
     clearTimeout(timer);timer=setTimeout(clearCode,EXPIRE_MIN*60000);
     requestWake();
     $("result").scrollIntoView({behavior:"smooth",block:"start"});
   }
   function clearCode(){
-    clearTimeout(timer);
+    clearTimeout(timer); currentCode="";
     $("barcode").innerHTML="";$("codeText").textContent="";
     $("result").hidden=true;$("empty").hidden=false;
     if(wakeLock){try{wakeLock.release()}catch(e){}wakeLock=null}
@@ -203,6 +254,38 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   function requestWake(){
     try{ if(navigator.wakeLock){navigator.wakeLock.request("screen").then(function(l){wakeLock=l}).catch(function(){})} }catch(e){}
   }
+
+  /* ---------- formaatcontrole ---------- */
+  var warnUse=null, warnRetry=null;
+  function showWarn(code, onUse, onRetry){
+    $("warnCode").textContent=code||"(leeg)";
+    warnUse=onUse; warnRetry=onRetry;
+    $("warn").hidden=false; $("warnRetry").focus();
+  }
+  function closeWarn(){ $("warn").hidden=true }
+  $("warnUse").addEventListener("click",function(){ closeWarn(); var f=warnUse; warnUse=warnRetry=null; f&&f() });
+  $("warnRetry").addEventListener("click",function(){ closeWarn(); var f=warnRetry; warnUse=warnRetry=null; f&&f() });
+  // geldige code direct tonen, anders eerst waarschuwen
+  function accept(code, onRetry){
+    code=String(code).trim();
+    if(isValid(code)){ show(code); return }
+    showWarn(code, function(){ show(code) }, onRetry);
+  }
+
+  /* ---------- delen ---------- */
+  $("shareBtn").addEventListener("click", async function(){
+    if(!currentCode) return;
+    if(navigator.share){
+      try{ await navigator.share({text:currentCode}); return }
+      catch(e){ if(e&&e.name==="AbortError") return }   // gebruiker sloot het deelmenu
+    }
+    try{ await navigator.clipboard.writeText(currentCode); $("shareLabel").textContent="Gekopieerd" }
+    catch(e){
+      var r=document.createRange(); r.selectNodeContents($("codeText"));
+      var s=getSelection(); s.removeAllRanges(); s.addRange(r);
+      setStatus("Kopiëren lukte niet automatisch. De code is geselecteerd, kopieer hem met lang drukken.");
+    }
+  });
 
   /* ---------- decoderen ---------- */
   function zxingDecode(canvas){
@@ -233,10 +316,11 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     var w=fr.width/scale, h=fr.height/scale;
     x-=w*pad; y-=h*pad; w*=1+2*pad; h*=1+2*pad;
     x=Math.max(0,x); y=Math.max(0,y); w=Math.min(vw-x,w); h=Math.min(vh-y,h);
-    return {x:x,y:y,w:w,h:h};
+    return {x:x,y:y,w:w,h:h,vw:vw,vh:vh};
   }
+  function resumeScan(){ paused=false; lastRead=null; readCount=0; $("frame").classList.remove("hit"); loopTimer=setTimeout(scanTick, SCAN_INTERVAL) }
   async function scanTick(){
-    if(!scanning) return;
+    if(!scanning||paused) return;
     var c=frameCropInVideo();
     if(c){
       // uitsnede 2x vergroten: dunne streepjes worden dan betrouwbaarder herkend
@@ -244,27 +328,103 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
       work.width=outW; work.height=outH;
       wctx.drawImage($("video"), c.x, c.y, c.w, c.h, 0, 0, outW, outH);
       var code=await decodeCanvas(work);
-      if(!scanning) return;
-      if(code){
+      if(!scanning||paused) return;
+      if(code){ code=String(code).trim() }
+      if(code && !(code===ignoredCode && Date.now()<ignoreUntil)){
         if(code===lastRead){ readCount++ } else { lastRead=code; readCount=1 }
         if(readCount>=CONFIRM_READS){
-          $("frame").classList.add("hit");
           try{ navigator.vibrate&&navigator.vibrate(80) }catch(e){}
-          stopScanner();
-          show(code);
+          if(isValid(code)){
+            $("frame").classList.add("hit"); stopScanner(); show(code); return;
+          }
+          paused=true;
+          showWarn(code,
+            function(){ stopScanner(); show(code) },
+            function(){ ignoredCode=code; ignoreUntil=Date.now()+IGNORE_MS; resumeScan() });
           return;
         }
       }
     }
     loopTimer=setTimeout(scanTick, SCAN_INTERVAL);
   }
+
+  /* lamp */
+  function hasTorch(t){ try{ var c=t.getCapabilities?t.getCapabilities():{}; return !!c.torch }catch(e){ return false } }
+  async function setTorch(on){
+    if(!track) return false;
+    try{ await track.applyConstraints({advanced:[{torch:on}]}) }
+    catch(e){ try{ await track.applyConstraints({torch:on}) }catch(e2){ return false } }
+    torchOn=on;
+    $("torchBtn").setAttribute("aria-pressed",on?"true":"false");
+    $("torchBtn").setAttribute("aria-label",on?"Lamp uitzetten":"Lamp aanzetten");
+    return true;
+  }
+  $("torchBtn").addEventListener("click",async function(){
+    var want=!torchOn;
+    if(await setTorch(want)) store("crp.torch", want?"1":"0");
+  });
+
+  /* belichting en scherpstelling op het kader richten */
+  async function tuneCamera(){
+    if(!track) return;
+    var caps={}; try{ caps=track.getCapabilities?track.getCapabilities():{} }catch(e){}
+    var adv={};
+    if(caps.focusMode&&caps.focusMode.indexOf("continuous")>-1) adv.focusMode="continuous";
+    if(caps.exposureMode&&caps.exposureMode.indexOf("continuous")>-1) adv.exposureMode="continuous";
+    if(caps.whiteBalanceMode&&caps.whiteBalanceMode.indexOf("continuous")>-1) adv.whiteBalanceMode="continuous";
+    var sup={}; try{ sup=navigator.mediaDevices.getSupportedConstraints()||{} }catch(e){}
+    var c=frameCropInVideo();
+    if(sup.pointsOfInterest&&c){
+      adv.pointsOfInterest=[{x:Math.min(1,Math.max(0,(c.x+c.w/2)/c.vw)), y:Math.min(1,Math.max(0,(c.y+c.h/2)/c.vh))}];
+    }
+    for(var k in adv){
+      var one={}; one[k]=adv[k];
+      try{ await track.applyConstraints({advanced:[one]}) }catch(e){}   // per instelling, zodat één weigering de rest niet blokkeert
+    }
+  }
+
+  function openStream(deviceId){
+    var v=deviceId?{deviceId:{exact:deviceId},width:{ideal:1920},height:{ideal:1080}}
+                  :{facingMode:{ideal:"environment"},width:{ideal:1920},height:{ideal:1080}};
+    return navigator.mediaDevices.getUserMedia({audio:false,video:v});
+  }
+  function stopTracks(s){ if(s) s.getTracks().forEach(function(t){t.stop()}) }
+
+  // Android: als de gekozen camera geen lamp heeft, zoek een andere camera achterop die er wel een heeft
+  async function findTorchCamera(){
+    if(/iPhone|iPad|iPod/.test(navigator.userAgent)) return;
+    var devs=[]; try{ devs=(await navigator.mediaDevices.enumerateDevices()).filter(function(d){return d.kind==="videoinput"}) }catch(e){ return }
+    if(devs.length<2) return;
+    var currentId=(track.getSettings&&track.getSettings().deviceId)||"";
+    var tried=0;
+    for(var i=0;i<devs.length&&tried<3;i++){
+      var d=devs[i]; if(!d.deviceId||d.deviceId===currentId) continue;
+      if(/front|voor|user/i.test(d.label)) continue;
+      tried++;
+      var s=null;
+      try{
+        stopTracks(stream); stream=null;
+        s=await openStream(d.deviceId);
+        var t=s.getVideoTracks()[0], fm=(t.getSettings&&t.getSettings().facingMode)||"";
+        if(hasTorch(t)&&fm!=="user"){ stream=s; track=t; store("crp.cameraId",d.deviceId); return }
+        stopTracks(s);
+      }catch(e){ stopTracks(s) }
+    }
+    // niets gevonden: terug naar de oorspronkelijke camera
+    try{ stream=await openStream(currentId||null) }catch(e){ stream=await openStream(null) }
+    track=stream.getVideoTracks()[0];
+  }
+
   async function startScanner(){
     if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){ openPhotoPicker(); return }
     setStatus("");
-    $("frame").classList.remove("hit"); lastRead=null; readCount=0;
+    $("frame").classList.remove("hit"); lastRead=null; readCount=0; paused=false; ignoredCode=null;
+    $("torchBtn").hidden=true; torchOn=false;
     $("scanner").hidden=false;
     try{
-      stream=await navigator.mediaDevices.getUserMedia({audio:false,video:{facingMode:{ideal:"environment"},width:{ideal:1920},height:{ideal:1080}}});
+      var saved=load("crp.cameraId");
+      try{ stream=saved?await openStream(saved):await openStream(null) }
+      catch(e){ if(saved){ store("crp.cameraId",null); stream=await openStream(null) } else throw e }
     }catch(e){
       $("scanner").hidden=true;
       setStatus(e&&e.name==="NotAllowedError"
@@ -273,18 +433,22 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
       showPhotoHint();
       return;
     }
-    var track=stream.getVideoTracks()[0];
-    try{
-      var caps=track.getCapabilities?track.getCapabilities():{};
-      if(caps.focusMode&&caps.focusMode.indexOf("continuous")>-1) await track.applyConstraints({advanced:[{focusMode:"continuous"}]});
-    }catch(e){}
+    track=stream.getVideoTracks()[0];
+    if(!hasTorch(track)){ try{ await findTorchCamera() }catch(e){} }
+    if($("scanner").hidden){ stopTracks(stream); stream=null; return }   // intussen geannuleerd
     var v=$("video"); v.srcObject=stream;
     try{ await v.play() }catch(e){}
-    scanning=true; scanTick();
+    if(hasTorch(track)){
+      $("torchBtn").hidden=false;
+      if(load("crp.torch")==="1") await setTorch(true);
+    }
+    scanning=true;
+    setTimeout(tuneCamera, 300);   // pas als het beeld er is, zodat de positie van het kader bekend is
+    scanTick();
   }
   function stopScanner(){
-    scanning=false; clearTimeout(loopTimer);
-    if(stream){ stream.getTracks().forEach(function(t){t.stop()}); stream=null }
+    scanning=false; paused=false; clearTimeout(loopTimer);
+    stopTracks(stream); stream=null; track=null; torchOn=false;
     $("video").srcObject=null;
     $("scanner").hidden=true;
   }
@@ -322,7 +486,8 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
       for(var i=0;i<tries.length&&!code;i++){ code=await decodeCanvas(canvasFor(img,tries[i][0],tries[i][1])) }
       URL.revokeObjectURL(img.src);
       if(!code) throw new Error("none");
-      show(code);
+      setStatus("");
+      accept(code, function(){ setStatus("Maak een nieuwe foto of scan opnieuw.") });
     }catch(e){
       setStatus("Geen barcode gevonden. Zoom de pagina op de computer verder in en maak de foto recht van voren.", true);
     }
@@ -335,12 +500,17 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   $("manualForm").addEventListener("submit",function(e){
     e.preventDefault(); var v=$("manualInput").value.trim();
     if(!v){setStatus("Vul eerst een code in.",true);return}
-    show(v); $("manualInput").value="";
+    accept(v, function(){ $("manualInput").value=v; $("manualInput").focus() });
+    if(isValid(v)) $("manualInput").value="";
   });
   $("clearBtn").addEventListener("click",clearCode);
-  document.addEventListener("keydown",function(e){ if(e.key==="Escape"&&scanning) stopScanner() });
+  document.addEventListener("keydown",function(e){
+    if(e.key!=="Escape") return;
+    if(!$("warn").hidden){ $("warnRetry").click(); return }
+    if(scanning) stopScanner();
+  });
   document.addEventListener("visibilitychange",function(){
-    if(document.visibilityState==="hidden"&&scanning) stopScanner();   // camera vrijgeven als de app naar de achtergrond gaat
+    if(document.visibilityState==="hidden"&&scanning){ closeWarn(); stopScanner() }   // camera vrijgeven als de app naar de achtergrond gaat
     if(document.visibilityState==="visible"&&!$("result").hidden) requestWake();
   });
 })();
