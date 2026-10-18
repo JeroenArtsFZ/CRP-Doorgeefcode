@@ -101,7 +101,7 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
 .result-actions .btn{min-height:52px;font-size:1rem}
 
 /* format warning */
-#warn{position:fixed;inset:0;z-index:60;background:rgba(31,43,51,.6);display:flex;align-items:center;justify-content:center;
+#warn,#shareWarn{position:fixed;inset:0;z-index:60;background:rgba(31,43,51,.6);display:flex;align-items:center;justify-content:center;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .warn-card{background:var(--surface);width:100%;max-width:420px;border-radius:16px;border-top:5px solid var(--warn);padding:22px;display:flex;flex-direction:column;gap:12px}
 .warn-card h2{font-family:var(--font-head);font-size:1.25rem;margin:0;color:var(--warn)}
@@ -109,6 +109,11 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
 .warn-code{font:700 1.3rem var(--font-mono);letter-spacing:.05em;color:var(--fg);background:var(--bg);border-radius:8px;padding:8px 10px;word-break:break-all;text-align:center}
 .warn-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px}
 .warn-actions .btn{min-height:52px;font-size:1rem}
+.privacy ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.privacy b{color:var(--fg)}
+.share-card{border-top-color:var(--yellow)}
+.share-card h2{color:var(--fg)}
+.share-card .q{color:var(--fg);font-weight:700;margin-top:4px}
 </style>
 </head>
 <body>
@@ -154,7 +159,7 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
 
   <div class="empty" id="empty">
     <b>Nog geen code</b>
-    Tik op de knop hierboven en houd de barcode in het gele kader. Er wordt niets opgeslagen of verstuurd.
+    Tik op de knop hierboven en houd de barcode in het gele kader. De app slaat niets op en verstuurt niets zelf.
   </div>
 
   <details>
@@ -175,7 +180,20 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     </ol>
   </details>
 
-  <p class="version">Versie 1.2 · werkt offline</p>
+  <details class="privacy">
+    <summary>Privacy en veilig delen</summary>
+    <ul>
+      <li>De app slaat niets op en verstuurt niets. Hij zoekt alleen binnen het gele kader naar een barcode.</li>
+      <li>Een verwijscode is een gepseudonimiseerd persoonsgegeven. Ga er zorgvuldig mee om.</li>
+      <li><b>Deel alleen via Outlook of Teams.</b> Niet via WhatsApp, sms, privémail of andere apps.</li>
+      <li>Delen buiten Fonkelzorg, bijvoorbeeld met een andere zorgverlener of de patiënt, mag als het past bij het zorgproces en jij het veilig inschat.</li>
+      <li><b>Deel de code nooit samen met naam, geboortedatum of BSN.</b></li>
+      <li>Wis de code na gebruik en houd je telefoon vergrendeld.</li>
+      <li>Per ongeluk verkeerd gedeeld? Meld het direct bij de praktijkhouder.</li>
+    </ul>
+  </details>
+
+  <p class="version">Versie 1.3 · werkt offline</p>
 </main>
 
 <div id="scanner" hidden role="dialog" aria-modal="true" aria-label="Barcode scannen">
@@ -190,6 +208,19 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
       <button class="btn" type="button" id="cancelScan">Annuleren</button>
     </div>
     <button class="linkbtn" type="button" id="usePhoto">Camera werkt niet? Maak een gewone foto</button>
+  </div>
+</div>
+
+<div id="shareWarn" class="modal" hidden role="alertdialog" aria-modal="true" aria-labelledby="shareTitle" aria-describedby="shareText">
+  <div class="warn-card share-card">
+    <h2 id="shareTitle">Let op bij delen</h2>
+    <p id="shareText">Deel de verwijscode alleen via <b>Outlook</b> of <b>Teams</b>, en nooit samen met naam, geboortedatum of BSN.</p>
+    <p>Lees meer onder <b>Privacy en veilig delen</b> op het hoofdscherm.</p>
+    <p class="q">Wil je doorgaan met delen?</p>
+    <div class="warn-actions">
+      <button class="btn secondary" type="button" id="shareNo">Nee</button>
+      <button class="btn" type="button" id="shareYes">Ja, delen</button>
+    </div>
   </div>
 </div>
 
@@ -245,7 +276,7 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     $("result").scrollIntoView({behavior:"smooth",block:"start"});
   }
   function clearCode(){
-    clearTimeout(timer); currentCode="";
+    clearTimeout(timer); currentCode=""; $("shareWarn").hidden=true;
     $("barcode").innerHTML="";$("codeText").textContent="";
     $("result").hidden=true;$("empty").hidden=false;
     if(wakeLock){try{wakeLock.release()}catch(e){}wakeLock=null}
@@ -273,7 +304,15 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   }
 
   /* ---------- delen ---------- */
-  $("shareBtn").addEventListener("click", async function(){
+  // eerst de privacywaarschuwing, pas na "Ja, delen" het deelmenu
+  $("shareBtn").addEventListener("click", function(){
+    if(!currentCode) return;
+    $("shareWarn").hidden=false; $("shareNo").focus();
+  });
+  function closeShareWarn(){ $("shareWarn").hidden=true; $("shareBtn").focus() }
+  $("shareNo").addEventListener("click", closeShareWarn);
+  $("shareYes").addEventListener("click", async function(){
+    $("shareWarn").hidden=true;
     if(!currentCode) return;
     if(navigator.share){
       try{ await navigator.share({text:currentCode}); return }
@@ -282,7 +321,7 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     try{ await navigator.clipboard.writeText(currentCode); $("shareLabel").textContent="Gekopieerd" }
     catch(e){
       var r=document.createRange(); r.selectNodeContents($("codeText"));
-      var s=getSelection(); s.removeAllRanges(); s.addRange(r);
+      var sel=getSelection(); sel.removeAllRanges(); sel.addRange(r);
       setStatus("Kopiëren lukte niet automatisch. De code is geselecteerd, kopieer hem met lang drukken.");
     }
   });
@@ -506,6 +545,7 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   $("clearBtn").addEventListener("click",clearCode);
   document.addEventListener("keydown",function(e){
     if(e.key!=="Escape") return;
+    if(!$("shareWarn").hidden){ closeShareWarn(); return }
     if(!$("warn").hidden){ $("warnRetry").click(); return }
     if(scanning) stopScanner();
   });

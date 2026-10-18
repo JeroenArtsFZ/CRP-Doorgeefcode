@@ -1,6 +1,6 @@
 // Bewaart alle app-bestanden op de telefoon, zodat de app zonder internet werkt.
 // Verhoog VERSION bij elke wijziging, dan halen telefoons de nieuwe versie op.
-const VERSION = "crp-doorgeefcode-v4";
+const VERSION = "crp-doorgeefcode-v5";
 const FILES = [
   "./", "index.html", "manifest.webmanifest",
   "lib/JsBarcode.all.min.js", "lib/zxing.min.js",
