@@ -11,6 +11,7 @@
 | `lib/` | Scanbibliotheken (JsBarcode, ZXing) en QR-generator, lokaal meegeleverd |
 | `fonts/` | Huisstijllettertypen Montserrat en Open Sans |
 | `icons/` | App-iconen |
+| `CLAUDE.md` | Context en afspraken voor Claude bij verder werken in Claude Code |
 
 ## Installeren op de telefoon
 
