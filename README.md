@@ -1,4 +1,4 @@
-# CRP code scanner, offline app (PWA) – versie 1.2
+# CRP code scanner, offline app (PWA) – versie 1.3
 
 ## Inhoud
 
