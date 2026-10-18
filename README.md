@@ -28,7 +28,8 @@ Open de app daarna één keer vanaf het beginscherm. Vanaf dat moment werkt hij 
 - **Lamp:** de lampknop verschijnt alleen op toestellen die het ondersteunen (Android met Chrome, iPhone vanaf ongeveer iOS 17.5). De keuze wordt onthouden.
 - **Belichting:** waar het toestel het ondersteunt, meet de camera licht en scherpte op het gele kader.
 - **Formaatcontrole:** een verwijscode is `ZD` gevolgd door 9 cijfers. Bij een afwijkende code toont de app "Dit lijkt geen verwijscode" met de keuze **Opnieuw** of **Toch gebruiken**. Het formaat staat in `CODE_FORMAT` in `index.html`.
-- **Delen:** de knop opent het deelmenu van de telefoon met de code als tekst. Zonder deelmenu kopieert hij de code naar het klembord.
+- **Delen:** na een tik op Delen toont de app eerst een privacywaarschuwing met de vraag "Wil je doorgaan met delen?". Alleen bij **Ja, delen** opent het deelmenu met de code als tekst. Zonder deelmenu kopieert hij de code naar het klembord.
+- **Privacy en veilig delen:** uitklapper op het hoofdscherm met de afspraken: alleen Outlook of Teams, nooit samen met naam, geboortedatum of BSN, fouten melden bij de praktijkhouder.
 - De code wordt na 10 minuten automatisch gewist. Dat stel je in bij `EXPIRE_MIN` in `index.html`.
 - Leg het gebruik vast in het kwaliteitssysteem van het lab, net als bij andere werkwijzen rond monsteridentificatie.
 - De bibliotheken JsBarcode, ZXing en de QR-generator vallen onder open-sourcelicenties (MIT), de lettertypen onder de SIL Open Font License. De licentieteksten staan in `lib/` en `fonts/`.
@@ -49,3 +50,4 @@ Deel met collega's het adres van `installeren.html`, bijvoorbeeld `https://jeroe
 | 1.1 | Huisstijl Fonkelzorg, live scannen binnen een kader |
 | 1.1.1 | Updates komen betrouwbaar binnen; landingspagina |
 | 1.2 | Lampknop, belichting op het kader, deelknop, controle op het formaat van de verwijscode |
+| 1.3 | Uitklapper Privacy en veilig delen, privacywaarschuwing bij elke keer delen |
