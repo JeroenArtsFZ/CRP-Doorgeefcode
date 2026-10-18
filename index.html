@@ -32,7 +32,7 @@
 [hidden]{display:none!important}
 html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.5;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 32px}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:48px 32px}
 main{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 
 header{display:flex;flex-direction:column;gap:8px}
@@ -114,6 +114,13 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
 .share-card{border-top-color:var(--yellow)}
 .share-card h2{color:var(--fg)}
 .share-card .q{color:var(--fg);font-weight:700;margin-top:4px}
+.codearea{display:grid}
+.codearea>*{grid-area:1/1;min-width:0}
+.ghost{visibility:hidden}
+.placeholder{border-top-color:var(--line);justify-content:center}
+.placeholder .code-box svg{fill:#9fb0b3;opacity:.45;filter:blur(1.2px) grayscale(1);height:120px}
+.sections{display:flex;flex-direction:column;gap:10px}
+header{margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -130,18 +137,10 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
       </svg>
       <h1>CRP code scanner</h1>
     </div>
-    <p>Scan de ZorgDomein-barcode op het scherm. De telefoon toont hem daarna groot, zodat de scanner bij het CRP-apparaat hem kan lezen.</p>
   </header>
 
-  <button class="btn" type="button" id="scanBtn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
-    Barcode fotograferen
-  </button>
-  <input type="file" id="photo" accept="image/*" capture="environment" hidden>
-
-  <div class="status" id="status" role="status" aria-live="polite"></div>
-
-  <section id="result" hidden>
+  <div class="codearea">
+  <section id="result" class="ghost" aria-hidden="true">
     <div class="panel">
       <div class="label">Houd dit scherm onder de scanner</div>
       <div class="code-box"><svg id="barcode" role="img" aria-label="Barcode"></svg></div>
@@ -157,13 +156,22 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     </div>
   </section>
 
-  <div class="empty" id="empty">
-    <b>Nog geen code</b>
-    Tik op de knop hierboven en houd de barcode in het gele kader. De app slaat niets op en verstuurt niets zelf.
+  <div class="panel placeholder" id="empty" aria-label="Nog geen code gescand">
+    <div class="code-box"><svg viewBox="0 0 306 80" preserveAspectRatio="none" aria-hidden="true"><rect x="6" y="0" width="3" height="80"/><rect x="12" y="0" width="4" height="80"/><rect x="18" y="0" width="2" height="80"/><rect x="25" y="0" width="2" height="80"/><rect x="30" y="0" width="6" height="80"/><rect x="38" y="0" width="6" height="80"/><rect x="47" y="0" width="2" height="80"/><rect x="51" y="0" width="4" height="80"/><rect x="59" y="0" width="2" height="80"/><rect x="64" y="0" width="2" height="80"/><rect x="71" y="0" width="4" height="80"/><rect x="77" y="0" width="6" height="80"/><rect x="85" y="0" width="2" height="80"/><rect x="92" y="0" width="2" height="80"/><rect x="99" y="0" width="6" height="80"/><rect x="109" y="0" width="2" height="80"/><rect x="114" y="0" width="2" height="80"/><rect x="121" y="0" width="2" height="80"/><rect x="126" y="0" width="4" height="80"/><rect x="133" y="0" width="6" height="80"/><rect x="141" y="0" width="6" height="80"/><rect x="150" y="0" width="6" height="80"/><rect x="159" y="0" width="2" height="80"/><rect x="166" y="0" width="6" height="80"/><rect x="175" y="0" width="3" height="80"/><rect x="180" y="0" width="6" height="80"/><rect x="188" y="0" width="6" height="80"/><rect x="196" y="0" width="6" height="80"/><rect x="205" y="0" width="4" height="80"/><rect x="214" y="0" width="4" height="80"/><rect x="221" y="0" width="4" height="80"/><rect x="230" y="0" width="4" height="80"/><rect x="237" y="0" width="3" height="80"/><rect x="243" y="0" width="2" height="80"/><rect x="248" y="0" width="2" height="80"/><rect x="255" y="0" width="3" height="80"/><rect x="263" y="0" width="4" height="80"/><rect x="270" y="0" width="4" height="80"/><rect x="277" y="0" width="6" height="80"/><rect x="285" y="0" width="2" height="80"/><rect x="292" y="0" width="4" height="80"/></svg></div>
+  </div>
   </div>
 
+  <button class="btn" type="button" id="scanBtn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
+    Code scannen
+  </button>
+  <input type="file" id="photo" accept="image/*" capture="environment" hidden>
+
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
+  <div class="sections">
   <details>
-    <summary>Lukt de foto niet? Code met de hand invoeren</summary>
+    <summary>Handmatige invoer</summary>
     <form class="manual" id="manualForm">
       <input id="manualInput" inputmode="text" autocomplete="off" placeholder="Verwijscode" aria-label="Verwijscode">
       <button class="btn" type="submit">Toon</button>
@@ -171,12 +179,23 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   </details>
 
   <details>
-    <summary>Tips voor een goede scan</summary>
+    <summary>Instructie gebruik</summary>
+    <ol>
+      <li>Open de verwijzing in ZorgDomein, of pak het papieren formulier erbij.</li>
+      <li>Tik op <b>Code scannen</b> en houd de barcode in het gele kader. De app herkent hem vanzelf.</li>
+      <li>Houd het telefoonscherm onder de scanner van het CRP-apparaat.</li>
+      <li>Controleer of de code bij de juiste patiënt en het juiste monster hoort.</li>
+      <li>Tik op <b>Klaar, wissen</b>. Na 10 minuten wist de code zichzelf.</li>
+    </ol>
+  </details>
+
+  <details>
+    <summary>Scan tips</summary>
     <ol>
       <li>Zoom de ZorgDomein-pagina in (Ctrl +) zodat de barcode groot op het scherm staat.</li>
       <li>Houd de barcode helemaal binnen het gele kader, recht en iets schuin tegen weerspiegeling.</li>
+      <li>Weinig licht bij een papieren formulier? Zet de lamp aan met de lampknop.</li>
       <li>Zet de telefoonhelderheid hoog voordat je onder de scanner gaat.</li>
-      <li>Controleer altijd of de getoonde code overeenkomt met de patiënt.</li>
     </ol>
   </details>
 
@@ -192,8 +211,9 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
       <li>Per ongeluk verkeerd gedeeld? Meld het direct bij de praktijkhouder.</li>
     </ul>
   </details>
+  </div>
 
-  <p class="version">Versie 1.3 · werkt offline</p>
+  <p class="version">Versie 1.3.1 · werkt offline</p>
 </main>
 
 <div id="scanner" hidden role="dialog" aria-modal="true" aria-label="Barcode scannen">
@@ -254,12 +274,21 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   var detector=null;
   try{ if("BarcodeDetector" in window) detector=new BarcodeDetector({formats:["code_128"]}) }catch(e){ detector=null }
 
+  setTimeout(function(){ renderGhost() },0);
   function store(k,v){ try{ if(v===null) localStorage.removeItem(k); else localStorage.setItem(k,v) }catch(e){} }
   function load(k){ try{ return localStorage.getItem(k) }catch(e){ return null } }
   function setStatus(msg, err){statusEl.textContent=msg||"";statusEl.className="status"+(err?" err":"")}
   function isValid(code){ return CODE_FORMAT.test(code) }
 
   /* ---------- tonen en wissen ---------- */
+  // Onzichtbare opvulling met een code van dezelfde lengte als een verwijscode, zodat het vak
+  // leeg en gevuld even hoog is en de knop Code scannen op een vaste plek blijft. Niet zichtbaar, dus niet scanbaar.
+  function renderGhost(){
+    try{ JsBarcode("#barcode","ZD000000000",{format:"CODE128",displayValue:false,margin:12,width:3,height:120,background:"#ffffff",lineColor:"#000000"}) }catch(e){}
+    $("codeText").textContent="ZD000000000"; $("time").textContent="00:00"; $("expires").textContent="Wordt over "+EXPIRE_MIN+" min gewist";
+    $("result").classList.add("ghost"); $("result").setAttribute("aria-hidden","true");
+  }
+  function hasCode(){ return !$("result").classList.contains("ghost") }
   function show(code){
     code=String(code).trim();
     try{
@@ -270,15 +299,14 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
     $("time").textContent=new Date().toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"});
     $("expires").textContent="Wordt over "+EXPIRE_MIN+" min gewist";
     $("shareLabel").textContent="Delen";
-    $("result").hidden=false;$("empty").hidden=true;setStatus("");
+    $("result").classList.remove("ghost");$("result").removeAttribute("aria-hidden");$("empty").hidden=true;setStatus("");
     clearTimeout(timer);timer=setTimeout(clearCode,EXPIRE_MIN*60000);
     requestWake();
-    $("result").scrollIntoView({behavior:"smooth",block:"start"});
+    $("result").scrollIntoView({behavior:"smooth",block:"nearest"});
   }
   function clearCode(){
     clearTimeout(timer); currentCode=""; $("shareWarn").hidden=true;
-    $("barcode").innerHTML="";$("codeText").textContent="";
-    $("result").hidden=true;$("empty").hidden=false;
+    renderGhost();$("empty").hidden=false;
     if(wakeLock){try{wakeLock.release()}catch(e){}wakeLock=null}
     setStatus("Code gewist.");
   }
@@ -551,7 +579,7 @@ details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4p
   });
   document.addEventListener("visibilitychange",function(){
     if(document.visibilityState==="hidden"&&scanning){ closeWarn(); stopScanner() }   // camera vrijgeven als de app naar de achtergrond gaat
-    if(document.visibilityState==="visible"&&!$("result").hidden) requestWake();
+    if(document.visibilityState==="visible"&&hasCode()) requestWake();
   });
 })();
 </script>
@@ -561,7 +589,7 @@ if("serviceWorker" in navigator){
   var hadController=!!navigator.serviceWorker.controller, reloaded=false;
   navigator.serviceWorker.addEventListener("controllerchange",function(){
     if(!hadController||reloaded) return;
-    var busy=!document.getElementById("result").hidden||!document.getElementById("scanner").hidden;
+    var busy=!document.getElementById("result").classList.contains("ghost")||!document.getElementById("scanner").hidden;
     if(busy) return;                 // nooit herladen terwijl er een code op het scherm staat of de camera aan is
     reloaded=true; location.reload();
   });

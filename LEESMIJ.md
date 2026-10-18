@@ -1,4 +1,4 @@
-# CRP code scanner, offline app (PWA) – versie 1.3
+# CRP code scanner, offline app (PWA) – versie 1.3.1
 
 Deze map is een complete webapp. Hij wordt één keer via een https-adres op de telefoon geïnstalleerd. Daarna werkt hij zonder internet.
 
@@ -91,3 +91,4 @@ Deel met collega's het adres van `installeren.html`, bijvoorbeeld `https://jeroe
 | 1.1.1 | Updates komen betrouwbaar binnen; landingspagina |
 | 1.2 | Lampknop, belichting op het kader, deelknop, controle op het formaat van de verwijscode |
 | 1.3 | Uitklapper Privacy en veilig delen, privacywaarschuwing bij elke keer delen |
+| 1.3.1 | Rustiger hoofdscherm: knop Code scannen onder het codevak op een vaste plek, vervaagde voorbeeldbarcode als leeg vak, uitleg naar uitklapper Instructie gebruik, uitklappers hernoemd |
