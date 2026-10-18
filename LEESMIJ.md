@@ -15,6 +15,7 @@ Alles gebeurt op de telefoon zelf: barcode scannen binnen het gele kader, lezen 
 | `lib/` | Scanbibliotheken (JsBarcode, ZXing) en QR-generator, lokaal meegeleverd |
 | `fonts/` | Huisstijllettertypen Montserrat en Open Sans |
 | `icons/` | App-iconen |
+| `CLAUDE.md` | Context en afspraken voor Claude bij verder werken in Claude Code |
 
 ## Stap 1: de map online zetten (eenmalig)
 
