@@ -1,4 +1,4 @@
-// Teksten van de CRP code scanner (app en installatiepagina).
+// Teksten van de ZD code scanner (app en installatiepagina).
 //
 // Zo pas je een tekst aan:
 // - Verander alleen de tekst tussen de aanhalingstekens. Laat de sleutel links van de dubbele punt staan.
@@ -20,7 +20,7 @@ window.TEKSTEN = {
     /* ================= App (index.html) ================= */
 
     // ---------- Hoofdscherm ----------
-    titel:            "CRP code scanner",
+    titel:            "ZD code scanner",
     houdOnderScanner: "Houd dit scherm onder de scanner",
     barcodeLabel:     "Barcode",                       // voorgelezen door de schermlezer
     gelezenOm:        "Gelezen om {tijd}",
@@ -41,7 +41,7 @@ window.TEKSTEN = {
     instructieTitel:  "Instructie gebruik",
     instructie1:      "Open de verwijzing in ZorgDomein, of pak het papieren formulier erbij.",
     instructie2:      "Tik op **Code scannen** en houd de barcode in het gele kader. De app herkent hem vanzelf.",
-    instructie3:      "Houd het telefoonscherm onder de scanner van het CRP-apparaat.",
+    instructie3:      "Houd het telefoonscherm onder de scanner van het apparaat.",
     instructie4:      "Controleer of de code bij de juiste patiënt en het juiste monster hoort.",
     instructie5:      "Tik op **Klaar, wissen**. Na 10 minuten wist de code zichzelf.",
 
@@ -106,15 +106,15 @@ window.TEKSTEN = {
 
     // ---------- Bovenste deel ----------
     instKicker:       "Voor het lab",
-    instKop:          "Van ZorgDomein naar het CRP-apparaat, zonder overtypen",
-    instIntro:        "Scan de verwijscode op het computerscherm met je telefoon. De app toont de barcode groot, zodat je hem direct onder de scanner van het CRP-apparaat houdt.",
+    instKop:          "Van ZorgDomein naar het apparaat, zonder overtypen",
+    instIntro:        "Scan de verwijscode op het computerscherm met je telefoon. De app toont de barcode groot, zodat je hem direct onder de scanner van het apparaat houdt.",
     knopInstalleren:  "App installeren",
     instHint:         "Gratis, zonder app store. Werkt daarna ook zonder internet.",
     instHintEenTik:   "Eén tik, zonder app store. Werkt daarna ook zonder internet.",   // als de browser een installatieknop aanbiedt
     instHintComputer: "Bedoeld voor je telefoon. Scan hieronder de QR-code om deze pagina op je telefoon te openen.",
     instStaatErAl:    "De app staat op je beginscherm.",
     instAlInGebruik:  "Je gebruikt de app al vanaf je beginscherm.",
-    instGelukt:       "Gelukt. De app staat nu op je beginscherm als CRP scanner.",
+    instGelukt:       "Gelukt. De app staat nu op je beginscherm als ZD scanner.",
     knopOpenInBrowser: "App openen in de browser",
     knopOpen:         "App openen",
 
@@ -130,7 +130,7 @@ window.TEKSTEN = {
     stap2Titel:       "Scan met je telefoon",
     stap2Tekst:       "Tik op **Code scannen** en houd de barcode in het gele kader. De app herkent hem vanzelf.",
     stap3Titel:       "Houd hem onder de scanner",
-    stap3Tekst:       "Loop naar het CRP-apparaat en houd het telefoonscherm onder de barcodescanner. Controleer of de code bij de patiënt hoort.",
+    stap3Tekst:       "Loop naar het apparaat en houd het telefoonscherm onder de barcodescanner. Controleer of de code bij de patiënt hoort.",
 
     // ---------- Veilig en eenvoudig ----------
     veiligTitel:      "Veilig en eenvoudig",
@@ -158,7 +158,7 @@ window.TEKSTEN = {
     computerTitel:    "Op de computer?",
     computerTekst:    "Scan deze QR-code met de camera van je telefoon om deze pagina daar te openen.",
     qrLabel:          "QR-code naar deze pagina",      // voorgelezen door de schermlezer
-    voetVersie:       "CRP code scanner · versie {versie}",
+    voetVersie:       "ZD code scanner · versie {versie}",
 
     // ---------- Venster na een tik op App installeren ----------
     hulpTitel:        "Zet de app op je beginscherm",
@@ -171,7 +171,7 @@ window.TEKSTEN = {
     // iPhone met Safari
     hulpIphone1:      "Tik op de deelknop {deelknop} onderin het scherm (op iPad bovenin).",
     hulpIphone2:      "Scroll naar beneden en kies **Zet op beginscherm**.",
-    hulpIphone3:      "Tik rechtsboven op **Voeg toe**. De app staat nu als **CRP scanner** op je beginscherm.",
+    hulpIphone3:      "Tik rechtsboven op **Voeg toe**. De app staat nu als **ZD scanner** op je beginscherm.",
     // iPhone met een andere browser (Chrome, Firefox, Edge)
     hulpIphoneAnders1: "Open deze pagina in **Safari**. Dat gaat het makkelijkst.",
     hulpIphoneAnders2: "Tik daar op de deelknop {deelknop}.",

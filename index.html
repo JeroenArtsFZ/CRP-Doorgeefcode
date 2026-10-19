@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>CRP code scanner</title>
+<title>ZD code scanner</title>
 <meta name="theme-color" content="#2b7175">
 <meta name="color-scheme" content="light">
 <link rel="manifest" href="manifest.webmanifest">
@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="CRP scanner">
+<meta name="apple-mobile-web-app-title" content="ZD scanner">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 @font-face{font-family:"Montserrat";font-weight:700;font-display:swap;src:url(fonts/montserrat-latin-700-normal.woff2) format("woff2")}
@@ -370,8 +370,10 @@ header{margin-bottom:6px}
     hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[ZXing.BarcodeFormat.CODE_128]);
     hints.set(ZXing.DecodeHintType.TRY_HARDER,true);
     var reader=new ZXing.MultiFormatReader(); reader.setHints(hints);
-    var bin=new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(new ZXing.HTMLCanvasElementLuminanceSource(canvas)));
-    return reader.decode(bin).getText();
+    var src=new ZXing.HTMLCanvasElementLuminanceSource(canvas);
+    // eerst de omzetting voor streepjescodes, dan de algemene: samen lezen ze vaker een licht onscherp beeld
+    try{ return reader.decode(new ZXing.BinaryBitmap(new ZXing.GlobalHistogramBinarizer(src))).getText() }catch(e){}
+    return reader.decode(new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(src))).getText();
   }
   async function decodeCanvas(canvas){
     if(detector){
@@ -400,8 +402,10 @@ header{margin-bottom:6px}
     if(!scanning||paused) return;
     var c=frameCropInVideo();
     if(c){
-      // uitsnede 2x vergroten: dunne streepjes worden dan betrouwbaarder herkend
-      var outW=Math.min(1600, Math.round(c.w*2)), outH=Math.max(1, Math.round(c.h*outW/c.w));
+      // ingebouwde herkenning (Android): uitsnede 2x vergroten, dunne streepjes worden dan betrouwbaarder herkend.
+      // ZXing (iPhone, geen ingebouwde herkenning): niet vergroten, het vervagen bij vergroten maakt lezen juist moeilijker.
+      var up=detector?2:1;
+      var outW=Math.min(1600, Math.round(c.w*up)), outH=Math.max(1, Math.round(c.h*outW/c.w));
       work.width=outW; work.height=outH;
       wctx.drawImage($("video"), c.x, c.y, c.w, c.h, 0, 0, outW, outH);
       var code=await decodeCanvas(work);

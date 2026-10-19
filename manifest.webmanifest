@@ -1,7 +1,7 @@
 {
-  "name": "CRP code scanner",
-  "short_name": "CRP scanner",
-  "description": "Scan de ZorgDomein-barcode en toon hem groot voor de scanner bij het CRP-apparaat.",
+  "name": "ZD code scanner",
+  "short_name": "ZD scanner",
+  "description": "Scan de ZorgDomein-barcode en toon hem groot voor de scanner bij het apparaat.",
   "lang": "nl",
   "start_url": "./",
   "scope": "./",
