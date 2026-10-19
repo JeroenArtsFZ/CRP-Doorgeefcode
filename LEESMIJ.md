@@ -1,4 +1,4 @@
-# CRP code scanner, offline app (PWA) – versie 1.3.1
+# CRP code scanner, offline app (PWA) – versie 1.4.0
 
 Deze map is een complete webapp. Hij wordt één keer via een https-adres op de telefoon geïnstalleerd. Daarna werkt hij zonder internet.
 
@@ -12,6 +12,8 @@ Alles gebeurt op de telefoon zelf: barcode scannen binnen het gele kader, lezen 
 | `installeren.html` | Landingspagina met uitleg en installatieknop. Deel deze link met collega's |
 | `manifest.webmanifest` | Naam, icoon en weergave als app |
 | `sw.js` | Zorgt dat de app offline werkt |
+| `teksten.js` | Alle teksten van de app en de landingspagina. Hier pas je teksten aan |
+| `vertalen.js` | Zet de teksten uit `teksten.js` op de pagina. Niet aanpassen |
 | `lib/` | Scanbibliotheken (JsBarcode, ZXing) en QR-generator, lokaal meegeleverd |
 | `fonts/` | Huisstijllettertypen Montserrat en Open Sans |
 | `icons/` | App-iconen |
@@ -49,6 +51,19 @@ Open de app daarna één keer vanaf het beginscherm. Vanaf dat moment werkt hij 
 3. Zet de bestanden opnieuw online.
 
 Vanaf versie 1.1.1 haalt de app bij elke start met internet de nieuwste versie op en ververst hij zichzelf. Dat gebeurt nooit terwijl er een code op het scherm staat of de camera aan is. GitHub Pages heeft na het uploaden een paar minuten nodig voordat de nieuwe versie overal zichtbaar is.
+
+## Teksten aanpassen
+
+Alle teksten staan in `teksten.js`, gegroepeerd per scherm. Elke regel is een sleutel met een tekst, bijvoorbeeld `knopWissen: "Klaar, wissen",`.
+
+- Pas alleen de tekst tussen de aanhalingstekens aan. De sleutel links laat je staan.
+- `**tekst**` wordt vetgedrukt. Laat `{min}`, `{tijd}`, `{versie}` en `{deelknop}` staan, die vult de app zelf in.
+- Een vergeten aanhalingsteken of komma laat de app niet starten. Hij toont dan een melding in plaats van een leeg scherm.
+- Teksten met "VASTE AFSPRAAK" (privacy en delen) wijzig je alleen na akkoord.
+- Verhoog daarna `VERSION` in `sw.js`, net als bij elke andere wijziging.
+- Niet in `teksten.js`: de paginatitels en beschrijving in de `<head>` van beide pagina's en `manifest.webmanifest`. Die worden gelezen zonder dat de app draait, bijvoorbeeld voor een linkvoorbeeld in Teams of de naam op het beginscherm.
+
+**Andere taal.** Voeg in `teksten.js` naast `nl: { ... }` een blok toe, bijvoorbeeld `en: { ... }`, met dezelfde sleutels. De app kiest de taal van de telefoon. Ontbreekt een tekst in die taal, dan toont hij de Nederlandse.
 
 ## Goed om te weten
 
@@ -93,3 +108,4 @@ Deel met collega's het adres van `installeren.html`, bijvoorbeeld `https://jeroe
 | 1.2 | Lampknop, belichting op het kader, deelknop, controle op het formaat van de verwijscode |
 | 1.3 | Uitklapper Privacy en veilig delen, privacywaarschuwing bij elke keer delen |
 | 1.3.1 | Rustiger hoofdscherm: knop Code scannen onder het codevak op een vaste plek, vervaagde voorbeeldbarcode als leeg vak, uitleg naar uitklapper Instructie gebruik, uitklappers hernoemd |
+| 1.4.0 | Alle teksten van de app en de landingspagina staan in `teksten.js`, voorbereid op meer talen. Geen zichtbare wijzigingen |

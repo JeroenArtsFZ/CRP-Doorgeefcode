@@ -9,13 +9,15 @@ Offline webapp (PWA) voor het lab van Fonkelzorg. Een medewerker scant met de te
 - App: `https://jeroenartsfz.github.io/CRP-Doorgeefcode/`
 - Landingspagina met installatieknop: `.../installeren.html`
 - Gehost via GitHub Pages vanaf de branch `main`, map root.
-- Huidige versie: **1.3.1**. Zie `LEESMIJ.md` voor de versiegeschiedenis.
+- Huidige versie: **1.4.0**. Zie `LEESMIJ.md` voor de versiegeschiedenis.
 
 ## Bestanden
 
 | Bestand | Inhoud |
 |---|---|
-| `index.html` | De hele app: opmaak, CSS en JS in één bestand |
+| `index.html` | De hele app: opmaak, CSS en JS in één bestand (teksten in `teksten.js`) |
+| `teksten.js` | Alle teksten van app en landingspagina, per taal (nu alleen `nl`). Jeroen past hier zelf teksten aan |
+| `vertalen.js` | Zet de teksten op de pagina: `data-t`, `data-t-attr`, `data-var-*`, en `T.t()` / `T.html()` in de code |
 | `installeren.html` | Landingspagina: uitleg, installatieknop per toestel, QR-code voor desktop |
 | `sw.js` | Service worker: network-first voor pagina's, cache-first voor overige bestanden |
 | `manifest.webmanifest` | Naam "CRP code scanner", korte naam "CRP scanner" |
@@ -49,6 +51,14 @@ Er is geen build-stap en er zijn geen dependencies om te installeren.
 - Het codevak is leeg en gevuld even hoog: `.codearea` stapelt het resultaatpaneel (met de klasse `ghost` onzichtbaar gevuld met `ZD000000000`) en het lege vak. Zo blijft de knop op een vaste plek.
 - Het lege vak toont een vervaagd **willekeurig** streeppatroon. Dat mag nooit een echte, scanbare barcode worden.
 
+**Teksten (vanaf 1.4.0)**
+- Elke tekst die de gebruiker ziet of hoort (ook `aria-label`, `placeholder` en meldingen uit de code) staat in `teksten.js`, nooit letterlijk in HTML of JS. Nieuwe teksten krijgen een sleutel in dezelfde groep en stijl.
+- Uitzondering: `<title>`, `<meta name="description">`, `apple-mobile-web-app-title` en `manifest.webmanifest` blijven vast in de bestanden, omdat ze zonder JavaScript worden gelezen.
+- Alleen `**vet**` als opmaak. HTML-stukjes (zoals het deelicoon) gaan als `{naam}` via de code mee, nooit in de tabel.
+- Teksten gemarkeerd "VASTE AFSPRAAK" (privacy, delen) alleen wijzigen na akkoord van Jeroen.
+- Jeroen past zelf teksten aan in `teksten.js`. Haal daarom altijd eerst de laatste versie op voordat je begint.
+- Na een wijziging: controleer dat elke `data-t`, `data-t-attr` en `t(...)`-sleutel in `teksten.js` bestaat.
+
 ## Huisstijl Fonkelzorg
 
 Licht thema. Tokens staan bovenin de CSS van `index.html`:
@@ -57,8 +67,8 @@ Licht thema. Tokens staan bovenin de CSS van `index.html`:
 ## Nieuwe versie uitbrengen
 
 Bij elke wijziging die op de telefoons moet landen:
-1. Verhoog `VERSION` in `sw.js` (nu `crp-doorgeefcode-v6`). Zonder deze stap halen telefoons de update niet betrouwbaar op.
-2. Pas het versienummer aan in `index.html` (`.version`) en in de footer van `installeren.html`.
+1. Verhoog `VERSION` in `sw.js` (nu `crp-doorgeefcode-v7`). Zonder deze stap halen telefoons de update niet betrouwbaar op.
+2. Pas het versienummer aan in `data-var-versie` van `.version` in `index.html` en van de footer in `installeren.html`.
 3. Voeg een regel toe aan de versietabel in `LEESMIJ.md`.
 4. Nieuwe bestanden die offline nodig zijn, zet je in `FILES` in `sw.js`.
 
