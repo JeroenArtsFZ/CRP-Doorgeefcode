@@ -8,6 +8,8 @@
 | `installeren.html` | Landingspagina met uitleg en installatieknop. Deel deze link met collega's |
 | `manifest.webmanifest` | Naam, icoon en weergave als app |
 | `sw.js` | Zorgt dat de app offline werkt |
+| `teksten.js` | Alle teksten van de app en de landingspagina. Hier pas je teksten aan |
+| `vertalen.js` | Zet de teksten uit `teksten.js` op de pagina. Niet aanpassen |
 | `lib/` | Scanbibliotheken (JsBarcode, ZXing) en QR-generator, lokaal meegeleverd |
 | `fonts/` | Huisstijllettertypen Montserrat en Open Sans |
 | `icons/` | App-iconen |
@@ -53,3 +55,4 @@ Deel met collega's het adres van `installeren.html`, bijvoorbeeld `https://jeroe
 | 1.2 | Lampknop, belichting op het kader, deelknop, controle op het formaat van de verwijscode |
 | 1.3 | Uitklapper Privacy en veilig delen, privacywaarschuwing bij elke keer delen |
 | 1.3.1 | Rustiger hoofdscherm: knop Code scannen onder het codevak op een vaste plek, vervaagde voorbeeldbarcode als leeg vak, uitleg naar uitklapper Instructie gebruik, uitklappers hernoemd |
+| 1.4.0 | Nieuwe naam ZD code scanner en "het apparaat" in plaats van "het CRP-apparaat". Beter scannen op iPhone. Alle teksten staan in `teksten.js`, voorbereid op meer talen |
