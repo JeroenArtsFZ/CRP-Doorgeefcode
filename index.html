@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>CRP code scanner</title>
+<title>ZD code scanner</title>
 <meta name="theme-color" content="#2b7175">
 <meta name="color-scheme" content="light">
 <link rel="manifest" href="manifest.webmanifest">
@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="CRP scanner">
+<meta name="apple-mobile-web-app-title" content="ZD scanner">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>
 @font-face{font-family:"Montserrat";font-weight:700;font-display:swap;src:url(fonts/montserrat-latin-700-normal.woff2) format("woff2")}
@@ -135,35 +135,35 @@ header{margin-bottom:6px}
         <path d="M28.8677 41.6642L43.3038 49.9999L57.7353 25.0022L28.8677 41.6642Z" fill="#398C8E"/>
         <path d="M14.4362 0L43.2992 16.6667V0H14.4362Z" fill="#E4C900"/>
       </svg>
-      <h1>CRP code scanner</h1>
+      <h1 data-t="titel"></h1>
     </div>
   </header>
 
   <div class="codearea">
   <section id="result" class="ghost" aria-hidden="true">
     <div class="panel">
-      <div class="label">Houd dit scherm onder de scanner</div>
-      <div class="code-box"><svg id="barcode" role="img" aria-label="Barcode"></svg></div>
+      <div class="label" data-t="houdOnderScanner"></div>
+      <div class="code-box"><svg id="barcode" role="img" data-t-attr="aria-label:barcodeLabel"></svg></div>
       <div class="code-text" id="codeText"></div>
-      <div class="meta"><span>Gelezen om <strong id="time"></strong></span><span id="expires"></span></div>
+      <div class="meta"><span data-t="gelezenOm"></span><span id="expires"></span></div>
       <div class="result-actions">
         <button class="btn secondary" id="shareBtn" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M7 10H5v11h14V10h-2"/></svg>
-          <span id="shareLabel">Delen</span>
+          <span id="shareLabel" data-t="knopDelen"></span>
         </button>
-        <button class="btn secondary" id="clearBtn" type="button">Klaar, wissen</button>
+        <button class="btn secondary" id="clearBtn" type="button" data-t="knopWissen"></button>
       </div>
     </div>
   </section>
 
-  <div class="panel placeholder" id="empty" aria-label="Nog geen code gescand">
+  <div class="panel placeholder" id="empty" data-t-attr="aria-label:leegVakLabel">
     <div class="code-box"><svg viewBox="0 0 306 80" preserveAspectRatio="none" aria-hidden="true"><rect x="6" y="0" width="3" height="80"/><rect x="12" y="0" width="4" height="80"/><rect x="18" y="0" width="2" height="80"/><rect x="25" y="0" width="2" height="80"/><rect x="30" y="0" width="6" height="80"/><rect x="38" y="0" width="6" height="80"/><rect x="47" y="0" width="2" height="80"/><rect x="51" y="0" width="4" height="80"/><rect x="59" y="0" width="2" height="80"/><rect x="64" y="0" width="2" height="80"/><rect x="71" y="0" width="4" height="80"/><rect x="77" y="0" width="6" height="80"/><rect x="85" y="0" width="2" height="80"/><rect x="92" y="0" width="2" height="80"/><rect x="99" y="0" width="6" height="80"/><rect x="109" y="0" width="2" height="80"/><rect x="114" y="0" width="2" height="80"/><rect x="121" y="0" width="2" height="80"/><rect x="126" y="0" width="4" height="80"/><rect x="133" y="0" width="6" height="80"/><rect x="141" y="0" width="6" height="80"/><rect x="150" y="0" width="6" height="80"/><rect x="159" y="0" width="2" height="80"/><rect x="166" y="0" width="6" height="80"/><rect x="175" y="0" width="3" height="80"/><rect x="180" y="0" width="6" height="80"/><rect x="188" y="0" width="6" height="80"/><rect x="196" y="0" width="6" height="80"/><rect x="205" y="0" width="4" height="80"/><rect x="214" y="0" width="4" height="80"/><rect x="221" y="0" width="4" height="80"/><rect x="230" y="0" width="4" height="80"/><rect x="237" y="0" width="3" height="80"/><rect x="243" y="0" width="2" height="80"/><rect x="248" y="0" width="2" height="80"/><rect x="255" y="0" width="3" height="80"/><rect x="263" y="0" width="4" height="80"/><rect x="270" y="0" width="4" height="80"/><rect x="277" y="0" width="6" height="80"/><rect x="285" y="0" width="2" height="80"/><rect x="292" y="0" width="4" height="80"/></svg></div>
   </div>
   </div>
 
   <button class="btn" type="button" id="scanBtn">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
-    Code scannen
+    <span data-t="knopScannen"></span>
   </button>
   <input type="file" id="photo" accept="image/*" capture="environment" hidden>
 
@@ -171,96 +171,106 @@ header{margin-bottom:6px}
 
   <div class="sections">
   <details>
-    <summary>Handmatige invoer</summary>
+    <summary data-t="handmatigTitel"></summary>
     <form class="manual" id="manualForm">
-      <input id="manualInput" inputmode="text" autocomplete="off" placeholder="Verwijscode" aria-label="Verwijscode">
-      <button class="btn" type="submit">Toon</button>
+      <input id="manualInput" inputmode="text" autocomplete="off" data-t-attr="placeholder:handmatigVeld;aria-label:handmatigVeld">
+      <button class="btn" type="submit" data-t="knopToon"></button>
     </form>
   </details>
 
   <details>
-    <summary>Instructie gebruik</summary>
+    <summary data-t="instructieTitel"></summary>
     <ol>
-      <li>Open de verwijzing in ZorgDomein, of pak het papieren formulier erbij.</li>
-      <li>Tik op <b>Code scannen</b> en houd de barcode in het gele kader. De app herkent hem vanzelf.</li>
-      <li>Houd het telefoonscherm onder de scanner van het CRP-apparaat.</li>
-      <li>Controleer of de code bij de juiste patiënt en het juiste monster hoort.</li>
-      <li>Tik op <b>Klaar, wissen</b>. Na 10 minuten wist de code zichzelf.</li>
+      <li data-t="instructie1"></li>
+      <li data-t="instructie2"></li>
+      <li data-t="instructie3"></li>
+      <li data-t="instructie4"></li>
+      <li data-t="instructie5"></li>
     </ol>
   </details>
 
   <details>
-    <summary>Scan tips</summary>
+    <summary data-t="tipsTitel"></summary>
     <ol>
-      <li>Zoom de ZorgDomein-pagina in (Ctrl +) zodat de barcode groot op het scherm staat.</li>
-      <li>Houd de barcode helemaal binnen het gele kader, recht en iets schuin tegen weerspiegeling.</li>
-      <li>Weinig licht bij een papieren formulier? Zet de lamp aan met de lampknop.</li>
-      <li>Zet de telefoonhelderheid hoog voordat je onder de scanner gaat.</li>
+      <li data-t="tip1"></li>
+      <li data-t="tip2"></li>
+      <li data-t="tip3"></li>
+      <li data-t="tip4"></li>
     </ol>
   </details>
 
   <details class="privacy">
-    <summary>Privacy en veilig delen</summary>
+    <summary data-t="privacyTitel"></summary>
     <ul>
-      <li>De app slaat niets op en verstuurt niets. Hij zoekt alleen binnen het gele kader naar een barcode.</li>
-      <li>Een verwijscode is een gepseudonimiseerd persoonsgegeven. Ga er zorgvuldig mee om.</li>
-      <li><b>Deel alleen via Outlook of Teams.</b> Niet via WhatsApp, sms, privémail of andere apps.</li>
-      <li>Delen buiten Fonkelzorg, bijvoorbeeld met een andere zorgverlener of de patiënt, mag als het past bij het zorgproces en jij het veilig inschat.</li>
-      <li><b>Deel de code nooit samen met naam, geboortedatum of BSN.</b></li>
-      <li>Wis de code na gebruik en houd je telefoon vergrendeld.</li>
-      <li>Per ongeluk verkeerd gedeeld? Meld het direct bij de praktijkhouder.</li>
+      <li data-t="privacy1"></li>
+      <li data-t="privacy2"></li>
+      <li data-t="privacy3"></li>
+      <li data-t="privacy4"></li>
+      <li data-t="privacy5"></li>
+      <li data-t="privacy6"></li>
+      <li data-t="privacy7"></li>
     </ul>
   </details>
   </div>
 
-  <p class="version">Versie 1.3.1 · werkt offline</p>
+  <p class="version" data-t="versieRegel" data-var-versie="1.4.0"></p>
 </main>
 
-<div id="scanner" hidden role="dialog" aria-modal="true" aria-label="Barcode scannen">
+<div id="scanner" hidden role="dialog" aria-modal="true" data-t-attr="aria-label:scannerLabel">
   <video id="video" playsinline muted autoplay></video>
   <div class="mask"><div id="frame"></div></div>
-  <div class="scan-top">Plaats de barcode in het gele kader<small>De code wordt automatisch herkend</small></div>
+  <div class="scan-top"><span data-t="scanKader"></span><small data-t="scanKaderUitleg"></small></div>
   <div class="scan-bottom">
     <div class="scan-row">
-      <button class="torch" type="button" id="torchBtn" aria-pressed="false" aria-label="Lamp aanzetten" hidden>
+      <button class="torch" type="button" id="torchBtn" aria-pressed="false" data-t-attr="aria-label:lampAan" hidden>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2h8v4l-2 4v11a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1V10L8 6z"/><path d="M8 6h8M12 13v2"/></svg>
       </button>
-      <button class="btn" type="button" id="cancelScan">Annuleren</button>
+      <button class="btn" type="button" id="cancelScan" data-t="knopAnnuleren"></button>
     </div>
-    <button class="linkbtn" type="button" id="usePhoto">Camera werkt niet? Maak een gewone foto</button>
+    <button class="linkbtn" type="button" id="usePhoto" data-t="knopCameraWerktNiet"></button>
   </div>
 </div>
 
 <div id="shareWarn" class="modal" hidden role="alertdialog" aria-modal="true" aria-labelledby="shareTitle" aria-describedby="shareText">
   <div class="warn-card share-card">
-    <h2 id="shareTitle">Let op bij delen</h2>
-    <p id="shareText">Deel de verwijscode alleen via <b>Outlook</b> of <b>Teams</b>, en nooit samen met naam, geboortedatum of BSN.</p>
-    <p>Lees meer onder <b>Privacy en veilig delen</b> op het hoofdscherm.</p>
-    <p class="q">Wil je doorgaan met delen?</p>
+    <h2 id="shareTitle" data-t="delenTitel"></h2>
+    <p id="shareText" data-t="delenTekst"></p>
+    <p data-t="delenMeerInfo"></p>
+    <p class="q" data-t="delenVraag"></p>
     <div class="warn-actions">
-      <button class="btn secondary" type="button" id="shareNo">Nee</button>
-      <button class="btn" type="button" id="shareYes">Ja, delen</button>
+      <button class="btn secondary" type="button" id="shareNo" data-t="knopNee"></button>
+      <button class="btn" type="button" id="shareYes" data-t="knopJaDelen"></button>
     </div>
   </div>
 </div>
 
 <div id="warn" hidden role="alertdialog" aria-modal="true" aria-labelledby="warnTitle" aria-describedby="warnText">
   <div class="warn-card">
-    <h2 id="warnTitle">Dit lijkt geen verwijscode</h2>
-    <p id="warnText">Een verwijscode bestaat uit ZD gevolgd door 9 cijfers. Gelezen is:</p>
+    <h2 id="warnTitle" data-t="warnTitel"></h2>
+    <p id="warnText" data-t="warnUitleg"></p>
     <div class="warn-code" id="warnCode"></div>
-    <p>Controleer of je de juiste barcode hebt gescand.</p>
+    <p data-t="warnControle"></p>
     <div class="warn-actions">
-      <button class="btn" type="button" id="warnRetry">Opnieuw</button>
-      <button class="btn secondary" type="button" id="warnUse">Toch gebruiken</button>
+      <button class="btn" type="button" id="warnRetry" data-t="knopOpnieuw"></button>
+      <button class="btn secondary" type="button" id="warnUse" data-t="knopTochGebruiken"></button>
     </div>
   </div>
 </div>
 
 <script src="lib/JsBarcode.all.min.js"></script>
 <script src="lib/zxing.min.js"></script>
+<script src="teksten.js"></script>
+<script src="vertalen.js"></script>
 <script>
 (function(){
+  // zonder teksten kan de app niet werken: liever een duidelijke melding dan een leeg scherm
+  if(!window.T){
+    document.querySelector("main").innerHTML='<p class="status err">De app kan niet starten: het bestand met teksten (teksten.js) ontbreekt of bevat een fout.</p>';
+    return;
+  }
+  var t=T.t;
+  T.vertaal({tijd:'<strong id="time"></strong>'});
+
   var EXPIRE_MIN = 10;          // code verdwijnt automatisch, tegen verwisseling met de volgende patiënt
   var SCAN_INTERVAL = 140;      // ms tussen twee pogingen
   var CONFIRM_READS = 2;        // aantal gelijke lezingen achter elkaar voordat de code wordt geaccepteerd
@@ -285,7 +295,7 @@ header{margin-bottom:6px}
   // leeg en gevuld even hoog is en de knop Code scannen op een vaste plek blijft. Niet zichtbaar, dus niet scanbaar.
   function renderGhost(){
     try{ JsBarcode("#barcode","ZD000000000",{format:"CODE128",displayValue:false,margin:12,width:3,height:120,background:"#ffffff",lineColor:"#000000"}) }catch(e){}
-    $("codeText").textContent="ZD000000000"; $("time").textContent="00:00"; $("expires").textContent="Wordt over "+EXPIRE_MIN+" min gewist";
+    $("codeText").textContent="ZD000000000"; $("time").textContent="00:00"; $("expires").textContent=t("wordtGewist",{min:EXPIRE_MIN});
     $("result").classList.add("ghost"); $("result").setAttribute("aria-hidden","true");
   }
   function hasCode(){ return !$("result").classList.contains("ghost") }
@@ -293,12 +303,12 @@ header{margin-bottom:6px}
     code=String(code).trim();
     try{
       JsBarcode("#barcode", code, {format:"CODE128", displayValue:false, margin:12, width:3, height:120, background:"#ffffff", lineColor:"#000000"});
-    }catch(e){setStatus("Deze code kan niet als Code 128 worden getoond. Controleer de invoer.",true);return}
+    }catch(e){setStatus(t("meldingNietTonen"),true);return}
     currentCode=code;
     $("codeText").textContent=code;
-    $("time").textContent=new Date().toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"});
-    $("expires").textContent="Wordt over "+EXPIRE_MIN+" min gewist";
-    $("shareLabel").textContent="Delen";
+    $("time").textContent=new Date().toLocaleTimeString(T.taal,{hour:"2-digit",minute:"2-digit"});
+    $("expires").textContent=t("wordtGewist",{min:EXPIRE_MIN});
+    $("shareLabel").textContent=t("knopDelen");
     $("result").classList.remove("ghost");$("result").removeAttribute("aria-hidden");$("empty").hidden=true;setStatus("");
     clearTimeout(timer);timer=setTimeout(clearCode,EXPIRE_MIN*60000);
     requestWake();
@@ -308,7 +318,7 @@ header{margin-bottom:6px}
     clearTimeout(timer); currentCode=""; $("shareWarn").hidden=true;
     renderGhost();$("empty").hidden=false;
     if(wakeLock){try{wakeLock.release()}catch(e){}wakeLock=null}
-    setStatus("Code gewist.");
+    setStatus(t("meldingGewist"));
   }
   function requestWake(){
     try{ if(navigator.wakeLock){navigator.wakeLock.request("screen").then(function(l){wakeLock=l}).catch(function(){})} }catch(e){}
@@ -317,7 +327,7 @@ header{margin-bottom:6px}
   /* ---------- formaatcontrole ---------- */
   var warnUse=null, warnRetry=null;
   function showWarn(code, onUse, onRetry){
-    $("warnCode").textContent=code||"(leeg)";
+    $("warnCode").textContent=code||t("warnLeeg");
     warnUse=onUse; warnRetry=onRetry;
     $("warn").hidden=false; $("warnRetry").focus();
   }
@@ -346,11 +356,11 @@ header{margin-bottom:6px}
       try{ await navigator.share({text:currentCode}); return }
       catch(e){ if(e&&e.name==="AbortError") return }   // gebruiker sloot het deelmenu
     }
-    try{ await navigator.clipboard.writeText(currentCode); $("shareLabel").textContent="Gekopieerd" }
+    try{ await navigator.clipboard.writeText(currentCode); $("shareLabel").textContent=t("knopGekopieerd") }
     catch(e){
       var r=document.createRange(); r.selectNodeContents($("codeText"));
       var sel=getSelection(); sel.removeAllRanges(); sel.addRange(r);
-      setStatus("Kopiëren lukte niet automatisch. De code is geselecteerd, kopieer hem met lang drukken.");
+      setStatus(t("meldingKopierenMislukt"));
     }
   });
 
@@ -360,8 +370,10 @@ header{margin-bottom:6px}
     hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS,[ZXing.BarcodeFormat.CODE_128]);
     hints.set(ZXing.DecodeHintType.TRY_HARDER,true);
     var reader=new ZXing.MultiFormatReader(); reader.setHints(hints);
-    var bin=new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(new ZXing.HTMLCanvasElementLuminanceSource(canvas)));
-    return reader.decode(bin).getText();
+    var src=new ZXing.HTMLCanvasElementLuminanceSource(canvas);
+    // eerst de omzetting voor streepjescodes, dan de algemene: samen lezen ze vaker een licht onscherp beeld
+    try{ return reader.decode(new ZXing.BinaryBitmap(new ZXing.GlobalHistogramBinarizer(src))).getText() }catch(e){}
+    return reader.decode(new ZXing.BinaryBitmap(new ZXing.HybridBinarizer(src))).getText();
   }
   async function decodeCanvas(canvas){
     if(detector){
@@ -390,8 +402,10 @@ header{margin-bottom:6px}
     if(!scanning||paused) return;
     var c=frameCropInVideo();
     if(c){
-      // uitsnede 2x vergroten: dunne streepjes worden dan betrouwbaarder herkend
-      var outW=Math.min(1600, Math.round(c.w*2)), outH=Math.max(1, Math.round(c.h*outW/c.w));
+      // ingebouwde herkenning (Android): uitsnede 2x vergroten, dunne streepjes worden dan betrouwbaarder herkend.
+      // ZXing (iPhone, geen ingebouwde herkenning): niet vergroten, het vervagen bij vergroten maakt lezen juist moeilijker.
+      var up=detector?2:1;
+      var outW=Math.min(1600, Math.round(c.w*up)), outH=Math.max(1, Math.round(c.h*outW/c.w));
       work.width=outW; work.height=outH;
       wctx.drawImage($("video"), c.x, c.y, c.w, c.h, 0, 0, outW, outH);
       var code=await decodeCanvas(work);
@@ -423,7 +437,7 @@ header{margin-bottom:6px}
     catch(e){ try{ await track.applyConstraints({torch:on}) }catch(e2){ return false } }
     torchOn=on;
     $("torchBtn").setAttribute("aria-pressed",on?"true":"false");
-    $("torchBtn").setAttribute("aria-label",on?"Lamp uitzetten":"Lamp aanzetten");
+    $("torchBtn").setAttribute("aria-label",t(on?"lampUit":"lampAan"));
     return true;
   }
   $("torchBtn").addEventListener("click",async function(){
@@ -495,8 +509,8 @@ header{margin-bottom:6px}
     }catch(e){
       $("scanner").hidden=true;
       setStatus(e&&e.name==="NotAllowedError"
-        ? "De app mag de camera niet gebruiken. Geef toestemming in de instellingen, of gebruik een gewone foto."
-        : "De camera kon niet starten. Probeer het opnieuw of gebruik een gewone foto.", true);
+        ? t("meldingCameraGeenToestemming")
+        : t("meldingCameraStartNiet"), true);
       showPhotoHint();
       return;
     }
@@ -525,7 +539,7 @@ header{margin-bottom:6px}
   function showPhotoHint(){
     if($("photoFallback")) return;
     var b=document.createElement("button"); b.type="button"; b.className="linkbtn"; b.id="photoFallback";
-    b.textContent="Gewone foto maken in plaats van live scannen"; b.addEventListener("click",openPhotoPicker);
+    b.textContent=t("knopGewoneFoto"); b.addEventListener("click",openPhotoPicker);
     statusEl.after(b);
   }
   function loadImage(file){
@@ -546,7 +560,7 @@ header{margin-bottom:6px}
   $("photo").addEventListener("change", async function(ev){
     var f=ev.target.files&&ev.target.files[0]; ev.target.value="";
     if(!f) return;
-    setStatus("Barcode lezen…");
+    setStatus(t("meldingBarcodeLezen"));
     try{
       var img=await loadImage(f), code=null;
       var tries=[[1600,false],[1100,false],[2400,false],[1600,true],[800,false]];
@@ -554,9 +568,9 @@ header{margin-bottom:6px}
       URL.revokeObjectURL(img.src);
       if(!code) throw new Error("none");
       setStatus("");
-      accept(code, function(){ setStatus("Maak een nieuwe foto of scan opnieuw.") });
+      accept(code, function(){ setStatus(t("meldingNieuweFoto")) });
     }catch(e){
-      setStatus("Geen barcode gevonden. Zoom de pagina op de computer verder in en maak de foto recht van voren.", true);
+      setStatus(t("meldingGeenBarcode"), true);
     }
   });
 
@@ -566,7 +580,7 @@ header{margin-bottom:6px}
   $("usePhoto").addEventListener("click",function(){ stopScanner(); openPhotoPicker() });
   $("manualForm").addEventListener("submit",function(e){
     e.preventDefault(); var v=$("manualInput").value.trim();
-    if(!v){setStatus("Vul eerst een code in.",true);return}
+    if(!v){setStatus(t("meldingVulCodeIn"),true);return}
     accept(v, function(){ $("manualInput").value=v; $("manualInput").focus() });
     if(isValid(v)) $("manualInput").value="";
   });

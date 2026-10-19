@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>CRP code scanner installeren</title>
-<meta name="description" content="Scan de ZorgDomein-barcode met je telefoon en houd hem onder de scanner van het CRP-apparaat. Installeer de app in één tik.">
+<title>ZD code scanner installeren</title>
+<meta name="description" content="Scan de ZorgDomein-barcode met je telefoon en houd hem onder de scanner van het apparaat. Installeer de app in één tik.">
 <meta name="theme-color" content="#2b7175">
 <meta name="color-scheme" content="light">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="CRP scanner">
+<meta name="apple-mobile-web-app-title" content="ZD scanner">
 <style>
 @font-face{font-family:"Montserrat";font-weight:700;font-display:swap;src:url(fonts/montserrat-latin-700-normal.woff2) format("woff2")}
 @font-face{font-family:"Open Sans";font-weight:400;font-display:swap;src:url(fonts/open-sans-latin-400-normal.woff2) format("woff2")}
@@ -131,7 +131,7 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
       <path d="M28.8677 41.6642L43.3038 49.9999L57.7353 25.0022L28.8677 41.6642Z" fill="#398C8E"/>
       <path d="M14.4362 0L43.2992 16.6667V0H14.4362Z" fill="#E4C900"/>
     </svg>
-    <span class="name">CRP code scanner</span>
+    <span class="name" data-t="titel"></span>
     <span class="org">Fonkelzorg</span>
   </div>
 </header>
@@ -140,38 +140,38 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
   <section class="hero">
     <div class="wrap">
       <div class="hero-text">
-        <span class="eyebrow">Voor het lab</span>
-        <h1>Van ZorgDomein naar het CRP-apparaat, zonder overtypen</h1>
-        <p class="lead">Scan de verwijscode op het computerscherm met je telefoon. De app toont de barcode groot, zodat je hem direct onder de scanner van het CRP-apparaat houdt.</p>
+        <span class="eyebrow" data-t="instKicker"></span>
+        <h1 data-t="instKop"></h1>
+        <p class="lead" data-t="instIntro"></p>
 
         <div class="actions" id="actions">
           <button class="btn" type="button" id="installBtn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>
-            <span id="installLabel">App installeren</span>
+            <span id="installLabel" data-t="knopInstalleren"></span>
           </button>
-          <p class="hint" id="installHint">Gratis, zonder app store. Werkt daarna ook zonder internet.</p>
+          <p class="hint" id="installHint" data-t="instHint"></p>
         </div>
         <div class="ok" id="installedMsg" hidden>
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>
-          <span id="installedText">De app staat op je beginscherm.</span>
+          <span id="installedText" data-t="instStaatErAl"></span>
         </div>
-        <a class="btn ghost" href="./" id="openLink">App openen in de browser</a>
+        <a class="btn ghost" href="./" id="openLink" data-t="knopOpenInBrowser"></a>
       </div>
 
       <div class="phone" aria-hidden="true">
         <div class="screen">
           <div class="bar">
             <svg viewBox="0 0 57.74 50"><path d="M14.4362 49.9999H43.2992L14.4362 33.3333V49.9999Z" fill="#48AA85"/><path d="M0 24.9978L14.4361 50.0001V16.6667L0 24.9978Z" fill="#A2D0AA"/><path d="M14.4361 0L0 25.0023L28.8676 8.33564L14.4361 0Z" fill="#F2E559"/><path d="M43.2992 0V33.3333L57.7353 25.0023L43.2992 0Z" fill="#8DD0E1"/><path d="M28.8677 41.6642L43.3038 49.9999L57.7353 25.0022L28.8677 41.6642Z" fill="#398C8E"/><path d="M14.4362 0L43.2992 16.6667V0H14.4362Z" fill="#E4C900"/></svg>
-            CRP code scanner
+            <span data-t="titel"></span>
           </div>
-          <div class="fake-btn">Code scannen</div>
+          <div class="fake-btn" data-t="knopScannen"></div>
           <div class="card">
-            <small>Houd dit scherm onder de scanner</small>
+            <small data-t="houdOnderScanner"></small>
             <svg id="demoBarcode"></svg>
-            <span class="code">VOORBEELD</span>
+            <span class="code" data-t="voorbeeldCode"></span>
           </div>
-          <div class="fake-btn alt">Klaar, code wissen</div>
-          <div class="tag">Voorbeeldweergave</div>
+          <div class="fake-btn alt" data-t="voorbeeldKnopWissen"></div>
+          <div class="tag" data-t="voorbeeldOnderschrift"></div>
         </div>
       </div>
     </div>
@@ -179,58 +179,58 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
 
   <section class="block" id="hoe">
     <div class="wrap">
-      <h2>Zo werkt het</h2>
+      <h2 data-t="zoWerktHet"></h2>
       <ol class="steps">
-        <li><span class="num">1</span><h3>Open de verwijzing</h3><p>Open de aanvraag in ZorgDomein op de computer, zodat de barcode op het scherm staat.</p></li>
-        <li><span class="num">2</span><h3>Scan met je telefoon</h3><p>Tik op <b>Code scannen</b> en houd de barcode in het gele kader. De app herkent hem vanzelf.</p></li>
-        <li><span class="num">3</span><h3>Houd hem onder de scanner</h3><p>Loop naar het CRP-apparaat en houd het telefoonscherm onder de barcodescanner. Controleer of de code bij de patiënt hoort.</p></li>
+        <li><span class="num">1</span><h3 data-t="stap1Titel"></h3><p data-t="stap1Tekst"></p></li>
+        <li><span class="num">2</span><h3 data-t="stap2Titel"></h3><p data-t="stap2Tekst"></p></li>
+        <li><span class="num">3</span><h3 data-t="stap3Titel"></h3><p data-t="stap3Tekst"></p></li>
       </ol>
     </div>
   </section>
 
   <section class="block alt-bg">
     <div class="wrap">
-      <h2>Veilig en eenvoudig</h2>
+      <h2 data-t="veiligTitel"></h2>
       <ul class="facts">
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          <div><b>De app zelf slaat niets op en verstuurt niets</b><span>Scannen en tonen gebeuren op de telefoon zelf. Delen gebeurt alleen als je daar zelf voor kiest.</span></div></li>
+          <div><b data-t="feit1Titel"></b><span data-t="feit1Tekst"></span></div></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg>
-          <div><b>Alleen binnen het kader</b><span>De app zoekt uitsluitend binnen het gele kader naar een barcode en leest geen tekst.</span></div></li>
+          <div><b data-t="feit2Titel"></b><span data-t="feit2Tekst"></span></div></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          <div><b>Code wist zichzelf</b><span>Na 10 minuten verdwijnt de code automatisch, zodat hij niet bij de volgende patiënt blijft staan.</span></div></li>
+          <div><b data-t="feit3Titel"></b><span data-t="feit3Tekst"></span></div></li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0"/><path d="M3 3l18 18"/></svg>
-          <div><b>Werkt zonder internet</b><span>Na de installatie werkt de app ook in vliegtuigmodus.</span></div></li>
+          <div><b data-t="feit4Titel"></b><span data-t="feit4Tekst"></span></div></li>
       </ul>
     </div>
   </section>
 
   <section class="block" id="installeren">
     <div class="wrap">
-      <h2>Installeren op je toestel</h2>
+      <h2 data-t="toestelTitel"></h2>
       <div class="devices">
         <div class="device" id="dev-ios">
-          <span class="pill" hidden>Jouw toestel</span>
-          <h3>iPhone</h3>
+          <span class="pill" hidden data-t="jouwToestel"></span>
+          <h3 data-t="iphoneTitel"></h3>
           <ol>
-            <li>Open deze pagina in <b>Safari</b>.</li>
-            <li>Tik op de deelknop <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="deelknop"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg> onderin of bovenin.</li>
-            <li>Kies <b>Zet op beginscherm</b> en tik op <b>Voeg toe</b>.</li>
+            <li data-t="iphone1"></li>
+            <li data-t="iphone2"></li>
+            <li data-t="iphone3"></li>
           </ol>
         </div>
         <div class="device" id="dev-android">
-          <span class="pill" hidden>Jouw toestel</span>
-          <h3>Android</h3>
+          <span class="pill" hidden data-t="jouwToestel"></span>
+          <h3 data-t="androidTitel"></h3>
           <ol>
-            <li>Open deze pagina in <b>Chrome</b>.</li>
-            <li>Tik op <b>App installeren</b> bovenaan deze pagina.</li>
-            <li>Lukt dat niet: tik op het menu <b>⋮</b> en kies <b>App installeren</b> of <b>Toevoegen aan startscherm</b>.</li>
+            <li data-t="android1"></li>
+            <li data-t="android2"></li>
+            <li data-t="android3"></li>
           </ol>
         </div>
         <div class="device" id="dev-desktop">
-          <span class="pill" hidden>Jouw toestel</span>
-          <h3>Op de computer?</h3>
-          <p class="hint">Scan deze QR-code met de camera van je telefoon om deze pagina daar te openen.</p>
-          <div class="qr" id="qr" role="img" aria-label="QR-code naar deze pagina"></div>
+          <span class="pill" hidden data-t="jouwToestel"></span>
+          <h3 data-t="computerTitel"></h3>
+          <p class="hint" data-t="computerTekst"></p>
+          <div class="qr" id="qr" role="img" data-t-attr="aria-label:qrLabel"></div>
         </div>
       </div>
     </div>
@@ -239,24 +239,32 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
 
 <footer>
   <div class="wrap">
-    <span>CRP code scanner · versie 1.3.1</span>
+    <span data-t="voetVersie" data-var-versie="1.4.0"></span>
     <span>Fonkelzorg</span>
   </div>
 </footer>
 
 <div id="sheet" hidden role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
   <div class="sheet-card">
-    <h2 id="sheetTitle">Zet de app op je beginscherm</h2>
+    <h2 id="sheetTitle" data-t="hulpTitel"></h2>
     <ol id="sheetSteps"></ol>
     <p class="note" id="sheetNote" hidden></p>
-    <button class="btn" type="button" id="sheetClose">Begrepen</button>
+    <button class="btn" type="button" id="sheetClose" data-t="knopBegrepen"></button>
   </div>
 </div>
 
 <script src="lib/JsBarcode.all.min.js"></script>
 <script src="lib/qrcode.js"></script>
+<script src="teksten.js"></script>
+<script src="vertalen.js"></script>
 <script>
 (function(){
+  // zonder teksten kan de pagina niet werken: liever een duidelijke melding dan een lege pagina
+  if(!window.T){
+    document.querySelector("main").innerHTML='<section class="block"><div class="wrap"><p>Deze pagina kan niet laden: het bestand met teksten (teksten.js) ontbreekt of bevat een fout.</p></div></section>';
+    return;
+  }
+  var t=T.t, html=T.html;
   var $=function(id){return document.getElementById(id)};
   var ua=navigator.userAgent;
   var isIOS=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
@@ -267,10 +275,12 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
   var standalone=window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;
   var deferred=null;
 
-  var ICON_SHARE='<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="deelknop"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg>';
+  var ICON_SHARE='<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-label="'+html("deelknopLabel")+'"><path d="M12 15V3M8 7l4-4 4 4"/><path d="M6 11H5v10h14V11h-1"/></svg>';
+  var ICOON={deelknop:ICON_SHARE};
+  T.vertaal(ICOON);
 
   /* voorbeeld-barcode en QR-code */
-  try{ JsBarcode("#demoBarcode","VOORBEELD",{format:"CODE128",displayValue:false,margin:0,width:2,height:56,background:"#ffffff"}) }catch(e){}
+  try{ JsBarcode("#demoBarcode",t("voorbeeldCode"),{format:"CODE128",displayValue:false,margin:0,width:2,height:56,background:"#ffffff"}) }catch(e){}
   try{
     var url=location.href.split("#")[0].split("?")[0];
     var qr=qrcode(0,"M"); qr.addData(url); qr.make();
@@ -284,24 +294,25 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
   function showInstalled(text){
     $("actions").hidden=true; $("installedMsg").hidden=false;
     if(text) $("installedText").textContent=text;
-    $("openLink").textContent="App openen";
+    $("openLink").textContent=t("knopOpen");
   }
-  if(standalone){ showInstalled("Je gebruikt de app al vanaf je beginscherm.") }
+  if(standalone){ showInstalled(t("instAlInGebruik")) }
 
   /* Chrome, Edge en Samsung Internet: echte installatieknop */
   window.addEventListener("beforeinstallprompt",function(e){
     e.preventDefault(); deferred=e;
-    $("installHint").textContent="Eén tik, zonder app store. Werkt daarna ook zonder internet.";
+    $("installHint").textContent=t("instHintEenTik");
   });
-  window.addEventListener("appinstalled",function(){ deferred=null; showInstalled("Gelukt. De app staat nu op je beginscherm als CRP scanner.") });
+  window.addEventListener("appinstalled",function(){ deferred=null; showInstalled(t("instGelukt")) });
 
   if(!isMobile){
-    $("installHint").textContent="Bedoeld voor je telefoon. Scan hieronder de QR-code om deze pagina op je telefoon te openen.";
+    $("installHint").textContent=t("instHintComputer");
   }
 
+  // stappen: sleutels uit teksten.js; notitie: sleutel of leeg
   function openSheet(steps,note){
-    $("sheetSteps").innerHTML=steps.map(function(s){return "<li>"+s+"</li>"}).join("");
-    $("sheetNote").hidden=!note; if(note) $("sheetNote").textContent=note;
+    $("sheetSteps").innerHTML=steps.map(function(s){return "<li>"+html(s,ICOON)+"</li>"}).join("");
+    $("sheetNote").hidden=!note; if(note) $("sheetNote").textContent=t(note);
     $("sheet").hidden=false; $("sheetClose").focus();
   }
   function closeSheet(){ $("sheet").hidden=true; $("installBtn").focus() }
@@ -309,35 +320,20 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
   $("installBtn").addEventListener("click",async function(){
     if(deferred){
       deferred.prompt();
-      try{ var choice=await deferred.userChoice; if(choice&&choice.outcome==="accepted") showInstalled("Gelukt. De app staat nu op je beginscherm als CRP scanner.") }catch(e){}
+      try{ var choice=await deferred.userChoice; if(choice&&choice.outcome==="accepted") showInstalled(t("instGelukt")) }catch(e){}
       deferred=null; return;
     }
     if(inAppBrowser){
-      openSheet([
-        "Deze pagina is geopend in een andere app, bijvoorbeeld je mail. Daar kun je niet installeren.",
-        isIOS?"Tik op het menu en kies <b>Open in Safari</b>.":"Tik op het menu <b>⋮</b> en kies <b>Openen in Chrome</b>.",
-        "Tik daar opnieuw op <b>App installeren</b>."
-      ]); return;
+      openSheet(["hulpInApp1", isIOS?"hulpInApp2Iphone":"hulpInApp2Android", "hulpInApp3"]); return;
     }
     if(isIOS){
-      openSheet([
-        iosNonSafari?"Open deze pagina in <b>Safari</b>. Dat gaat het makkelijkst.":"Tik op de deelknop "+ICON_SHARE+" onderin het scherm (op iPad bovenin).",
-        iosNonSafari?"Tik daar op de deelknop "+ICON_SHARE+".":"Scroll naar beneden en kies <b>Zet op beginscherm</b>.",
-        iosNonSafari?"Kies <b>Zet op beginscherm</b> en tik op <b>Voeg toe</b>.":"Tik rechtsboven op <b>Voeg toe</b>. De app staat nu als <b>CRP scanner</b> op je beginscherm."
-      ],"Apple staat geen installatieknop op websites toe. Daarom gaat het op een iPhone via het deelmenu. Het duurt maar een paar seconden."); return;
+      openSheet(iosNonSafari?["hulpIphoneAnders1","hulpIphoneAnders2","hulpIphoneAnders3"]:["hulpIphone1","hulpIphone2","hulpIphone3"],
+        "hulpIphoneNotitie"); return;
     }
     if(isAndroid){
-      openSheet([
-        "Tik rechtsboven op het menu <b>⋮</b> van de browser.",
-        "Kies <b>App installeren</b> of <b>Toevoegen aan startscherm</b>.",
-        "Bevestig met <b>Installeren</b>."
-      ],"Staat de app al op je telefoon? Dan biedt de browser installeren niet nog een keer aan. Open hem dan via je startscherm."); return;
+      openSheet(["hulpAndroid1","hulpAndroid2","hulpAndroid3"],"hulpAndroidNotitie"); return;
     }
-    openSheet([
-      "Richt de camera van je telefoon op de QR-code onderaan deze pagina.",
-      "Tik op de link die verschijnt.",
-      "Tik op je telefoon op <b>App installeren</b>."
-    ]);
+    openSheet(["hulpComputer1","hulpComputer2","hulpComputer3"]);
     $("dev-desktop").scrollIntoView({behavior:"smooth",block:"center"});
   });
   $("sheetClose").addEventListener("click",closeSheet);

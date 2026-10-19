@@ -1,8 +1,8 @@
 // Bewaart alle app-bestanden op de telefoon, zodat de app zonder internet werkt.
 // Verhoog VERSION bij elke wijziging, dan halen telefoons de nieuwe versie op.
-const VERSION = "crp-doorgeefcode-v6";
+const VERSION = "crp-doorgeefcode-v7";
 const FILES = [
-  "./", "index.html", "manifest.webmanifest",
+  "./", "index.html", "manifest.webmanifest", "teksten.js", "vertalen.js",
   "lib/JsBarcode.all.min.js", "lib/zxing.min.js",
   "fonts/montserrat-latin-700-normal.woff2", "fonts/open-sans-latin-400-normal.woff2", "fonts/open-sans-latin-700-normal.woff2",
   "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png"

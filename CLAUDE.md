@@ -1,24 +1,27 @@
-# CLAUDE.md – CRP code scanner
+# CLAUDE.md – ZD code scanner
 
 Context voor Claude bij het werken aan deze repository. Eigenaar: Jeroen Arts (Fonkelzorg). Communiceer in de taal van zijn bericht (meestal Nederlands). Alle teksten in de app zijn Nederlands.
 
 ## Wat dit is
 
-Offline webapp (PWA) voor het lab van Fonkelzorg. Een medewerker scant met de telefoon de ZorgDomein-verwijscode (Code 128) van een computerscherm of papieren formulier. De app toont de code groot, zodat de handscanner bij het CRP-apparaat hem leest.
+Offline webapp (PWA) voor het lab van Fonkelzorg. Een medewerker scant met de telefoon de ZorgDomein-verwijscode (Code 128) van een computerscherm of papieren formulier. De app toont de code groot, zodat de handscanner bij het apparaat (nu het CRP-apparaat) hem leest. In de app staat bewust "het apparaat", zodat hij ook bij andere apparaten past.
 
+- Naam: "ZD code scanner" (vanaf 1.4.0, daarvoor "CRP code scanner"). De repo en het adres heten bewust nog `CRP-Doorgeefcode`: een nieuwe repo-naam verandert het GitHub Pages-adres, en dan krijgen geïnstalleerde apps geen updates meer. De opslagnamen `crp.*` en de cachenaam in `sw.js` blijven ook.
 - App: `https://jeroenartsfz.github.io/CRP-Doorgeefcode/`
 - Landingspagina met installatieknop: `.../installeren.html`
 - Gehost via GitHub Pages vanaf de branch `main`, map root.
-- Huidige versie: **1.3.1**. Zie `LEESMIJ.md` voor de versiegeschiedenis.
+- Huidige versie: **1.4.0**. Zie `LEESMIJ.md` voor de versiegeschiedenis.
 
 ## Bestanden
 
 | Bestand | Inhoud |
 |---|---|
-| `index.html` | De hele app: opmaak, CSS en JS in één bestand |
+| `index.html` | De hele app: opmaak, CSS en JS in één bestand (teksten in `teksten.js`) |
+| `teksten.js` | Alle teksten van app en landingspagina, per taal (nu alleen `nl`). Jeroen past hier zelf teksten aan |
+| `vertalen.js` | Zet de teksten op de pagina: `data-t`, `data-t-attr`, `data-var-*`, en `T.t()` / `T.html()` in de code |
 | `installeren.html` | Landingspagina: uitleg, installatieknop per toestel, QR-code voor desktop |
 | `sw.js` | Service worker: network-first voor pagina's, cache-first voor overige bestanden |
-| `manifest.webmanifest` | Naam "CRP code scanner", korte naam "CRP scanner" |
+| `manifest.webmanifest` | Naam "ZD code scanner", korte naam "ZD scanner" |
 | `lib/` | JsBarcode 3.11.6, @zxing/library 0.21.3 (UMD), qrcode-generator 1.4.4. Lokaal meegeleverd, nooit via CDN |
 | `fonts/` | Montserrat 700, Open Sans 400/700 (woff2, OFL) |
 | `icons/` | App-iconen in huisstijl |
@@ -49,6 +52,14 @@ Er is geen build-stap en er zijn geen dependencies om te installeren.
 - Het codevak is leeg en gevuld even hoog: `.codearea` stapelt het resultaatpaneel (met de klasse `ghost` onzichtbaar gevuld met `ZD000000000`) en het lege vak. Zo blijft de knop op een vaste plek.
 - Het lege vak toont een vervaagd **willekeurig** streeppatroon. Dat mag nooit een echte, scanbare barcode worden.
 
+**Teksten (vanaf 1.4.0)**
+- Elke tekst die de gebruiker ziet of hoort (ook `aria-label`, `placeholder` en meldingen uit de code) staat in `teksten.js`, nooit letterlijk in HTML of JS. Nieuwe teksten krijgen een sleutel in dezelfde groep en stijl.
+- Uitzondering: `<title>`, `<meta name="description">`, `apple-mobile-web-app-title` en `manifest.webmanifest` blijven vast in de bestanden, omdat ze zonder JavaScript worden gelezen.
+- Alleen `**vet**` als opmaak. HTML-stukjes (zoals het deelicoon) gaan als `{naam}` via de code mee, nooit in de tabel.
+- Teksten gemarkeerd "VASTE AFSPRAAK" (privacy, delen) alleen wijzigen na akkoord van Jeroen.
+- Jeroen past zelf teksten aan in `teksten.js`. Haal daarom altijd eerst de laatste versie op voordat je begint.
+- Na een wijziging: controleer dat elke `data-t`, `data-t-attr` en `t(...)`-sleutel in `teksten.js` bestaat.
+
 ## Huisstijl Fonkelzorg
 
 Licht thema. Tokens staan bovenin de CSS van `index.html`:
@@ -57,8 +68,8 @@ Licht thema. Tokens staan bovenin de CSS van `index.html`:
 ## Nieuwe versie uitbrengen
 
 Bij elke wijziging die op de telefoons moet landen:
-1. Verhoog `VERSION` in `sw.js` (nu `crp-doorgeefcode-v6`). Zonder deze stap halen telefoons de update niet betrouwbaar op.
-2. Pas het versienummer aan in `index.html` (`.version`) en in de footer van `installeren.html`.
+1. Verhoog `VERSION` in `sw.js` (nu `crp-doorgeefcode-v7`). Zonder deze stap halen telefoons de update niet betrouwbaar op.
+2. Pas het versienummer aan in `data-var-versie` van `.version` in `index.html` en van de footer in `installeren.html`.
 3. Voeg een regel toe aan de versietabel in `LEESMIJ.md`.
 4. Nieuwe bestanden die offline nodig zijn, zet je in `FILES` in `sw.js`.
 
@@ -69,6 +80,13 @@ Bij elke wijziging die op de telefoons moet landen:
 - Bij UI-wijzigingen eerst een mockup laten zien, bijvoorbeeld als screenshots van een testkopie.
 - Vat voor het bouwen de afspraken samen en wacht op akkoord.
 - Wees eerlijk over wat wel en niet getest is.
+
+## Scannen: Android en iPhone
+
+- Android (Chrome) heeft de ingebouwde `BarcodeDetector`. Safari op iPhone heeft die niet, en daar leest alleen ZXing (JavaScript).
+- Vanaf 1.4.0 krijgt ZXing de uitsnede zonder 2× vergroten en probeert hij eerst `GlobalHistogramBinarizer`, daarna `HybridBinarizer`. In een simulatie las dit 11 van 20 lastige situaties, tegen 7 met de oude aanpak. De ingebouwde herkenning (Android) houdt de 2× vergroting.
+- Onscherpte en te kleine streepjes in beeld zijn de grootste oorzaak van niet lezen. Geen lezer lost dat op.
+- Mogelijke vervolgstap als iPhones slecht blijven lezen (nog niet gekozen door Jeroen): een iOS-testbranch met diagnose (camerresolutie, pogingen per seconde) en eventueel zxing-wasm (zxing-cpp, MIT, ongeveer 1 MB, lokaal meeleveren). In de simulatie was zxing-wasm 5 tot 10 keer sneller per poging, maar niet vaker succesvol.
 
 ## Testen
 
