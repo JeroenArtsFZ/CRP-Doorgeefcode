@@ -68,6 +68,7 @@ details{color:var(--muted);font-size:.95rem;background:var(--surface);border:1px
 summary{cursor:pointer;color:var(--fg);font-weight:700}
 details[open] summary{margin-bottom:16px}
 details ol{padding-left:1.2em;margin:0;display:flex;flex-direction:column;gap:4px}
+details a{color:var(--teal)}
 .manual{display:flex;gap:8px}
 .manual input{flex:1;min-width:0;font:500 1.05rem var(--font-mono);padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
 .manual .btn{min-height:auto;width:auto;padding:0 18px;font-size:1rem}
@@ -196,6 +197,7 @@ header{margin-bottom:6px}
       <li data-t="tip2"></li>
       <li data-t="tip3"></li>
       <li data-t="tip4"></li>
+      <li data-t="tipIphoneCamera" id="tipIphone" hidden></li>
     </ol>
   </details>
 
@@ -213,7 +215,7 @@ header{margin-bottom:6px}
   </details>
   </div>
 
-  <p class="version" data-t="versieRegel" data-var-versie="1.4.0"></p>
+  <p class="version" data-t="versieRegel" data-var-versie="1.4.1"></p>
 </main>
 
 <div id="scanner" hidden role="dialog" aria-modal="true" data-t-attr="aria-label:scannerLabel">
@@ -269,7 +271,11 @@ header{margin-bottom:6px}
     return;
   }
   var t=T.t;
-  T.vertaal({tijd:'<strong id="time"></strong>'});
+  T.vertaal({tijd:'<strong id="time"></strong>',
+    installatiepagina:'<a href="installeren.html#iphone-camera" target="_blank" rel="noopener">'+T.html("linkInstallatiepagina")+'</a>'});
+  // iPhone vraagt bij elke scan om de camera, tenzij de camera in Safari op "Sta toe" staat: alleen daar de tip tonen
+  var isIOS=/iPhone|iPad|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  document.getElementById("tipIphone").hidden=!isIOS;
 
   var EXPIRE_MIN = 10;          // code verdwijnt automatisch, tegen verwisseling met de volgende patiënt
   var SCAN_INTERVAL = 140;      // ms tussen twee pogingen

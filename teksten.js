@@ -51,6 +51,8 @@ window.TEKSTEN = {
     tip2:             "Houd de barcode helemaal binnen het gele kader, recht en iets schuin tegen weerspiegeling.",
     tip3:             "Weinig licht bij een papieren formulier? Zet de lamp aan met de lampknop.",
     tip4:             "Zet de helderheid van het telefoonscherm hoog, als het lab apparaat moeite heeft om het af te lezen.",
+    tipIphoneCamera:  "Vraagt je iPhone bij elke scan om de camera? Volg de stappen op de {installatiepagina}.",   // alleen zichtbaar op een iPhone
+    linkInstallatiepagina: "installatiepagina",
 
     // ---------- Uitklapper Privacy en veilig delen ----------
     // VASTE AFSPRAAK: alleen wijzigen na akkoord (NEN 7510 / FG)
@@ -155,6 +157,15 @@ window.TEKSTEN = {
     android1:         "Open deze pagina in **Chrome**.",
     android2:         "Tik op **App installeren** bovenaan deze pagina.",
     android3:         "Lukt dat niet: tik op het menu **⋮** en kies **App installeren** of **Toevoegen aan startscherm**.",
+    // iPhone: camera één keer toestaan (blok onder de toestellen)
+    iphoneCameraTitel: "iPhone: camera één keer toestaan",
+    iphoneCameraIntro: "Een iPhone vraagt anders bij elke scan om toestemming voor de camera. Met deze instelling hoeft dat maar één keer.",
+    iphoneCamera1:    "Open deze pagina in **Safari** en tik op **App openen in de browser**.",
+    iphoneCamera2:    "Tik links in de adresbalk op **aA** (op nieuwere iPhones een menu-icoon).",
+    iphoneCamera3:    "Kies **Website-instellingen**.",
+    iphoneCamera4:    "Zet **Camera** op **Sta toe**.",
+    iphoneCamera5:    "Zet de app daarna op je beginscherm, of open hem opnieuw als hij er al staat.",
+    iphoneCameraNotitie: "Staat de app al op je beginscherm? Doe dan stap 1 t/m 4 en open de app opnieuw.",
     computerTitel:    "Vanaf de computer?",
     computerTekst:    "Scan deze QR-code met de camera van je telefoon.",
     qrLabel:          "QR-code naar deze pagina",      // voorgelezen door de schermlezer
@@ -176,6 +187,7 @@ window.TEKSTEN = {
     hulpIphoneAnders1: "Open deze pagina in **Safari**. Dat gaat het makkelijkst.",
     hulpIphoneAnders2: "Tik daar op de deelknop {deelknop}.",
     hulpIphoneAnders3: "Kies **Zet op beginscherm** en tik op **Voeg toe**.",
+    hulpIphoneCamera: "Zet daarna de camera één keer op **Sta toe**, zie **iPhone: camera één keer toestaan** op deze pagina.",   // laatste stap, iPhone met Safari en met een andere browser
     hulpIphoneNotitie: "Apple staat geen installatieknop op websites toe. Daarom gaat het op een iPhone via het deelmenu. Het duurt maar een paar seconden.",
     // Android
     hulpAndroid1:     "Tik rechtsboven op het menu **⋮** van de browser.",
