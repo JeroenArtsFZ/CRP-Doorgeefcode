@@ -233,13 +233,25 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
           <div class="qr" id="qr" role="img" data-t-attr="aria-label:qrLabel"></div>
         </div>
       </div>
+      <div class="device" id="iphone-camera">
+        <h3 data-t="iphoneCameraTitel"></h3>
+        <p class="hint" data-t="iphoneCameraIntro"></p>
+        <ol>
+          <li data-t="iphoneCamera1"></li>
+          <li data-t="iphoneCamera2"></li>
+          <li data-t="iphoneCamera3"></li>
+          <li data-t="iphoneCamera4"></li>
+          <li data-t="iphoneCamera5"></li>
+        </ol>
+        <p class="hint" data-t="iphoneCameraNotitie"></p>
+      </div>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <span data-t="voetVersie" data-var-versie="1.4.0"></span>
+    <span data-t="voetVersie" data-var-versie="1.4.1"></span>
     <span>Fonkelzorg</span>
   </div>
 </footer>
@@ -327,7 +339,7 @@ footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 24px;justify
       openSheet(["hulpInApp1", isIOS?"hulpInApp2Iphone":"hulpInApp2Android", "hulpInApp3"]); return;
     }
     if(isIOS){
-      openSheet(iosNonSafari?["hulpIphoneAnders1","hulpIphoneAnders2","hulpIphoneAnders3"]:["hulpIphone1","hulpIphone2","hulpIphone3"],
+      openSheet(iosNonSafari?["hulpIphoneAnders1","hulpIphoneAnders2","hulpIphoneAnders3","hulpIphoneCamera"]:["hulpIphone1","hulpIphone2","hulpIphone3","hulpIphoneCamera"],
         "hulpIphoneNotitie"); return;
     }
     if(isAndroid){

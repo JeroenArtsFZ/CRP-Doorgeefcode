@@ -10,7 +10,7 @@ Offline webapp (PWA) voor het lab van Fonkelzorg. Een medewerker scant met de te
 - App: `https://jeroenartsfz.github.io/CRP-Doorgeefcode/`
 - Landingspagina met installatieknop: `.../installeren.html`
 - Gehost via GitHub Pages vanaf de branch `main`, map root.
-- Huidige versie: **1.4.0**. Zie `LEESMIJ.md` voor de versiegeschiedenis.
+- Huidige versie: **1.4.1**. Zie `LEESMIJ.md` voor de versiegeschiedenis.
 
 ## Bestanden
 
@@ -68,7 +68,7 @@ Licht thema. Tokens staan bovenin de CSS van `index.html`:
 ## Nieuwe versie uitbrengen
 
 Bij elke wijziging die op de telefoons moet landen:
-1. Verhoog `VERSION` in `sw.js` (nu `crp-doorgeefcode-v7`). Zonder deze stap halen telefoons de update niet betrouwbaar op.
+1. Verhoog `VERSION` in `sw.js` (nu `crp-doorgeefcode-v8`). Zonder deze stap halen telefoons de update niet betrouwbaar op.
 2. Pas het versienummer aan in `data-var-versie` van `.version` in `index.html` en van de footer in `installeren.html`.
 3. Voeg een regel toe aan de versietabel in `LEESMIJ.md`.
 4. Nieuwe bestanden die offline nodig zijn, zet je in `FILES` in `sw.js`.
@@ -85,6 +85,7 @@ Bij elke wijziging die op de telefoons moet landen:
 
 - Android (Chrome) heeft de ingebouwde `BarcodeDetector`. Safari op iPhone heeft die niet, en daar leest alleen ZXing (JavaScript).
 - Vanaf 1.4.0 krijgt ZXing de uitsnede zonder 2× vergroten en probeert hij eerst `GlobalHistogramBinarizer`, daarna `HybridBinarizer`. In een simulatie las dit 11 van 20 lastige situaties, tegen 7 met de oude aanpak. De ingebouwde herkenning (Android) houdt de 2× vergroting.
+- Cameratoestemming: iOS vraagt bij elke scan opnieuw, omdat de app de camera na elke scan stopt (privacyregel) en iOS de toestemming niet vasthoudt. Oplossing (1.4.1, door Jeroen getest): in Safari via aA → Website-instellingen → Camera → Sta toe. De instructie staat op de installatiepagina (`#iphone-camera`); de app toont op iPhone een tip met een link ernaar. De camera langer laten doorlopen is bewust níet gekozen.
 - Onscherpte en te kleine streepjes in beeld zijn de grootste oorzaak van niet lezen. Geen lezer lost dat op.
 - Mogelijke vervolgstap als iPhones slecht blijven lezen (nog niet gekozen door Jeroen): een iOS-testbranch met diagnose (camerresolutie, pogingen per seconde) en eventueel zxing-wasm (zxing-cpp, MIT, ongeveer 1 MB, lokaal meeleveren). In de simulatie was zxing-wasm 5 tot 10 keer sneller per poging, maar niet vaker succesvol.
 

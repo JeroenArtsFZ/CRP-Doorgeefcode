@@ -1,4 +1,4 @@
-# ZD code scanner, offline app (PWA) – versie 1.4.0
+# ZD code scanner, offline app (PWA) – versie 1.4.1
 
 ## Inhoud
 
@@ -56,3 +56,4 @@ Deel met collega's het adres van `installeren.html`, bijvoorbeeld `https://jeroe
 | 1.3 | Uitklapper Privacy en veilig delen, privacywaarschuwing bij elke keer delen |
 | 1.3.1 | Rustiger hoofdscherm: knop Code scannen onder het codevak op een vaste plek, vervaagde voorbeeldbarcode als leeg vak, uitleg naar uitklapper Instructie gebruik, uitklappers hernoemd |
 | 1.4.0 | Nieuwe naam ZD code scanner en "het apparaat" in plaats van "het CRP-apparaat". Beter scannen op iPhone. Alle teksten staan in `teksten.js`, voorbereid op meer talen |
+| 1.4.1 | iPhone: instructie "camera één keer toestaan" op de installatiepagina en als laatste stap in het installatievenster, plus een tip onder Scan tips (alleen op iPhone) |
